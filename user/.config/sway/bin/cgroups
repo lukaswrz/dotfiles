@@ -37,7 +37,7 @@ launches and would fail to detect background apps or special surfaces.
 Therefore it's recommended to supplement the script with use of systemd user
 services for such background apps.
 
-Dependencies: dbus-next, i3ipc, psutil, tenacity, python-xlib
+Dependencies: dbus-next, i3ipc, psutil, tenacity
 """
 import argparse
 import asyncio
