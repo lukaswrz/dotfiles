@@ -2,7 +2,13 @@
 
 exec ~/.config/sway/bin/session
 exec ~/.config/sway/bin/cgroups
-exec swayidle -w timeout 600 'notify-send Ni\ ni...' timeout 605 'swaylock --daemonize && swaymsg output \* dpms off' resume 'swaymsg output \* dpms on'
+exec swayidle \
+  lock 'swaylock --daemonize' \
+  unlock 'notify-send Unlocked...' \
+  before-sleep 'loginctl lock-session' \
+  timeout 595 'notify-send Ni\ ni...' \
+  timeout 600 'loginctl lock-session && swaymsg output \* dpms off' \
+  resume 'swaymsg output \* dpms on'
 
 # Modifiers.
 
@@ -131,7 +137,7 @@ bindsym $mod+minus scratchpad show
 bindsym $mod+space focus mode_toggle
 bindsym $mod+Shift+c reload
 
-bindsym $mod+Shift+s exec swaylock --daemonize && swayidle -w timeout 5 'swaymsg output \* dpms off' resume 'swaymsg output \* dpms on'
+bindsym $mod+Shift+s exec loginctl lock-session
 
 bindsym $mod+f fullscreen toggle
 
@@ -176,8 +182,8 @@ bindsym $mod+Shift+z exec swaynag \
   -b 'Exit sway' 'swaymsg exit' \
   -b 'Shutdown' 'systemctl stop sway-session.target && shutdown now' \
   -b 'Reboot' 'systemctl stop sway-session.target && reboot' \
-  -b 'Suspend' 'swaylock --daemonize && systemctl suspend' \
-  -b 'Hibernate' 'swaylock --daemonize && systemctl hibernate'
+  -b 'Suspend' 'loginctl lock-session && systemctl suspend' \
+  -b 'Hibernate' 'loginctl lock-session && systemctl hibernate'
 
 bindsym $mod+r mode "resize"
 bindsym $mod+g mode "gaps"
