@@ -1,0 +1,12 @@
+#!/usr/bin/env oil
+
+if (len(ARGV) > 0) {
+  exit 1
+}
+
+cd /tmp {
+  git clone --depth 1 https://aur.archlinux.org/yay.git || true
+  cd yay {
+    makepkg --syncdeps --install --noconfirm
+  }
+}

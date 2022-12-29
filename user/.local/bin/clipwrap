@@ -1,0 +1,17 @@
+#!/usr/bin/env oil
+
+var fallback = '/tmp/clipboard'
+
+if (len(ARGV) === 1) {
+  setvar fallback = ARGV[0]
+} elif (len(ARGV) > 1) {
+  exit 1
+}
+
+try {
+  wl-copy
+  notify-send 'Input copied to clipboard.'
+}
+if (_status !== 0) {
+  cat > /tmp/clipboard
+}

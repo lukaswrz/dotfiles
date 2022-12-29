@@ -1,0 +1,656 @@
+#!/usr/bin/env python
+
+from os import PathLike, geteuid
+import sys
+from subprocess import run
+from argparse import ArgumentParser
+from pathlib import Path
+from enum import Enum
+from typing import Callable, Any, Iterator
+from collections.abc import MutableMapping
+from shutil import copy
+
+
+class Scope(Enum):
+    SYSTEM = 1
+    USER = 2
+
+    def __str__(self) -> str:
+        if self == self.SYSTEM:
+            return "system"
+        if self == self.USER:
+            return "user"
+        raise ValueError
+
+
+class Delivery:
+    def __init__(self, packages: list[str]) -> None:
+        self.packages = packages
+
+    def install(self) -> None:
+        if len(self.packages) == 0:
+            return
+
+        run(["yay", "--needed", "-S", "--"] + self.packages)
+
+
+class Units(MutableMapping):
+    def __init__(self, *args, **kwargs) -> None:
+        self.store: dict[Scope, list[str]] = {}
+        self.update(dict(*args, **kwargs))
+
+    def __getitem__(self, key: Scope) -> list[str]:
+        return self.store[self._keytransform(key)]
+
+    def __setitem__(self, key: Scope, value: list[str]) -> None:
+        self.store[self._keytransform(key)] = value
+
+    def __delitem__(self, key: Scope) -> None:
+        del self.store[self._keytransform(key)]
+
+    def __iter__(self) -> Iterator:
+        return iter(self.store)
+
+    def __len__(self) -> int:
+        return len(self.store)
+
+    def _keytransform(self, key: Scope) -> Scope:
+        return key
+
+    def extend(self, scope: Scope, value: list[str]) -> None:
+        self.store[scope].extend(value)
+
+    def enable(self, scope: Scope) -> None:
+        if scope not in self.store or len(self.store[scope]) == 0:
+            return
+
+        match scope:
+            case Scope.USER:
+                run(["systemctl", "--user", "enable", "--"] + self.store[scope])
+            case Scope.SYSTEM:
+                run(["systemctl", "--system", "enable", "--"] + self.store[scope])
+            case _:
+                raise ValueError
+
+
+class Files(MutableMapping):
+    def __init__(self, *args, **kwargs) -> None:
+        self.store = dict()
+        self.update(dict(*args, **kwargs))
+
+    def __getitem__(self, key: Scope) -> list[str | PathLike]:
+        return self.store[self._keytransform(key)]
+
+    def __setitem__(self, key: Scope, value: list[str | PathLike]) -> None:
+        self.store[self._keytransform(key)] = value
+
+    def __delitem__(self, key: Scope) -> None:
+        del self.store[self._keytransform(key)]
+
+    def __iter__(self) -> Iterator:
+        return iter(self.store)
+
+    def __len__(self) -> int:
+        return len(self.store)
+
+    def _keytransform(self, key: Scope) -> Scope:
+        return key
+
+    def _apply(
+        self,
+        fn: Callable[[str | PathLike, str | PathLike], Any],
+        scope: Scope,
+        parent: str | PathLike,
+        target: str | PathLike,
+        force=False,
+    ) -> None:
+        if scope not in self.store:
+            return
+
+        for file in self.store[scope]:
+            src_file = Path(parent) / file
+            dest_file = Path(target) / file
+
+            try:
+                dest_file.parent.mkdir(parents=True)
+            except FileExistsError:
+                pass
+
+            try:
+                fn(dest_file, src_file)
+            except FileExistsError:
+                if force:
+                    dest_file.unlink()
+                    fn(dest_file, src_file)
+
+    def copy(
+        self, scope: Scope, parent: str | PathLike, target: str | PathLike, force=False
+    ) -> None:
+        def copy_from(dest_file: str | PathLike, src_file: str | PathLike):
+            if not Path(src_file).is_file():
+                raise OSError("Not a regular file")
+            copy(src_file, dest_file)
+
+        self._apply(copy_from, scope, parent, target, force=force)
+
+    def symlink(
+        self, scope: Scope, parent: str | PathLike, target: str | PathLike, force=False
+    ) -> None:
+        def symlink_to(dest_file: str | PathLike, src_file: str | PathLike):
+            Path(dest_file).symlink_to(Path(src_file))
+
+        self._apply(symlink_to, scope, parent, target, force=force)
+
+    def hardlink(
+        self, scope: Scope, parent: str | PathLike, target: str | PathLike, force=False
+    ) -> None:
+        def hardlink_to(dest_file: str | PathLike, src_file: str | PathLike):
+            Path(dest_file).hardlink_to(Path(src_file))
+
+        self._apply(hardlink_to, scope, parent, target, force=force)
+
+
+class Dirs(MutableMapping):
+    def __init__(self, *args, **kwargs) -> None:
+        self.store = dict()
+        self.update(dict(*args, **kwargs))
+
+    def __getitem__(self, key: Scope) -> list[str | PathLike]:
+        return self.store[self._keytransform(key)]
+
+    def __setitem__(self, key: Scope, value: list[str | PathLike]) -> None:
+        self.store[self._keytransform(key)] = value
+
+    def __delitem__(self, key: Scope) -> None:
+        del self.store[self._keytransform(key)]
+
+    def __iter__(self) -> Iterator:
+        return iter(self.store)
+
+    def __len__(self) -> int:
+        return len(self.store)
+
+    def _keytransform(self, key: Scope) -> Scope:
+        return key
+
+    def mkdir(self, scope: Scope, target: str | Path, exist_ok=False) -> None:
+        if scope in self.store:
+            for dir in self.store[scope]:
+                dest_dir = Path(target) / dir
+                dest_dir.mkdir(parents=True, exist_ok=exist_ok)
+
+
+class Option:
+    def __init__(
+        self,
+        delivery: Delivery = Delivery([]),
+        units: Units = Units({}),
+        files: Files = Files({}),
+        dirs: Dirs = Dirs({}),
+        inclusions: list[str] = [],
+    ) -> None:
+        self.delivery = delivery
+        self.units = units
+        self.files = files
+        self.dirs = dirs
+        self.inclusions = inclusions
+
+
+OPTIONS = {
+    "desktop": Option(
+        delivery=Delivery(
+            [
+                "sway",
+                "swaybg",
+                "swaylock",
+                "swayidle",
+                "zathura",
+                "zathura-pdf-mupdf",
+                "grim",
+                "imv",
+                "wtype",
+                "wl-clipboard",
+                "xorg-xwayland",
+                "xorg-xrandr",
+                "slurp",
+                "mako",
+                "wob",
+                "tofi",
+                "bemenu",
+                "bemenu-wayland",
+                "i3status-rust",
+                "mpd",
+                "mpc",
+                "ncmpcpp",
+                "wf-recorder",
+                "playerctl",
+                "alacritty",
+                "xdg-desktop-portal",
+                "xdg-desktop-portal-wlr",
+                "brightnessctl",
+                "pamixer",
+                "pavucontrol",
+                "mpv",
+                "libnotify",
+                "pipewire",
+                "pipewire-alsa",
+                "pipewire-jack",
+                "pipewire-pulse",
+                "wireplumber",
+                "xdg-utils",
+                "xdg-user-dirs",
+                "wireguard-tools",
+                "aerc",
+                "newsboat",
+                "rbw",
+                "uni",
+                "flatpak",
+                "syncthing",
+                "python-dbus-next",
+                "python-i3ipc",
+                "python-psutil",
+                "python-tenacity",
+            ]
+        ),
+        units=Units(
+            {
+                Scope.USER: [
+                    "syncthing.service",
+                    "mpd.service",
+                    # "wob.service",
+                    "wob.socket",
+                ],
+                Scope.SYSTEM: [
+                    "systemd-networkd.service",
+                ],
+            }
+        ),
+        files=Files(
+            {
+                Scope.USER: [
+                    ".config/mimeapps.list",
+                    ".config/i3status-rust/config.toml",
+                    ".config/mako/config",
+                    ".config/wob/wob.ini",
+                    ".config/tofi/config",
+                    ".config/alacritty/alacritty.yml",
+                    ".config/zathura/zathurarc",
+                    ".config/imv/config",
+                    ".config/sway/modes/audio.conf",
+                    ".config/sway/modes/brightness.conf",
+                    ".config/sway/modes/clipboard.conf",
+                    ".config/sway/modes/gaps.conf",
+                    ".config/sway/modes/mpc.conf",
+                    ".config/sway/modes/resize.conf",
+                    ".config/sway/modes/alias.conf",
+                    ".config/sway/workspaces/move.conf",
+                    ".config/sway/workspaces/select.conf",
+                    ".config/sway/bin/emojimenu",
+                    ".config/sway/bin/manmenu",
+                    ".config/sway/bin/outputmenu",
+                    ".config/sway/bin/outputassign",
+                    ".config/sway/bin/grabcolor",
+                    ".config/sway/bin/grabraw",
+                    ".config/sway/bin/grabregion",
+                    ".config/sway/bin/session",
+                    ".config/sway/bin/xwaylandprimarymenu",
+                    ".config/sway/bin/cgroups",
+                    ".config/sway/config",
+                    ".config/systemd/user/sway-session.target",
+                    ".local/bin/clipwrap",
+                    ".local/bin/askpassmenu",
+                    ".local/bin/pinentry",
+                    ".local/bin/swaywrap",
+                    ".config/mpv/mpv.conf",
+                    ".config/mpd/mpd.conf",
+                    ".config/ncmpcpp/config",
+                    ".config/ncmpcpp/bindings",
+                    ".config/swaylock/config",
+                    ".config/aerc/aerc.conf",
+                    ".config/aerc/binds.conf",
+                    ".config/newsboat/config",
+                ],
+            }
+        ),
+        dirs=Dirs(
+            {
+                Scope.USER: [
+                    ".config/sway/custom",
+                    ".cache/playlists",
+                ],
+            }
+        ),
+        inclusions=[
+            "essential",
+            "dev",
+            "fonts",
+            "neovide",
+            "vulkan",
+            "bluetooth",
+            "printing",
+            "qt",
+        ],
+    ),
+    "mobile": Option(
+        delivery=Delivery(
+            [
+                "iwd",
+                "tlp",
+            ]
+        ),
+        files=Files(
+            {
+                Scope.SYSTEM: ["etc/iwd/main.conf"],
+            }
+        ),
+        units=Units(
+            {
+                Scope.SYSTEM: [
+                    "iwd.service",
+                    "tlp.service",
+                ]
+            }
+        ),
+    ),
+    "qt": Option(
+        delivery=Delivery(
+            [
+                "qt5-base",
+                "qt5-wayland",
+                "qt6-base",
+                "qt6-wayland",
+            ]
+        ),
+    ),
+    "bluetooth": Option(
+        delivery=Delivery(
+            [
+                "bluez",
+                "bluez-utils",
+            ]
+        ),
+        units=Units(
+            {
+                Scope.SYSTEM: [
+                    "bluetooth.service",
+                ],
+            }
+        ),
+    ),
+    "printing": Option(
+        delivery=Delivery(["cups"]),
+        units=Units(
+            {
+                Scope.SYSTEM: [
+                    "cups.service",
+                ],
+            }
+        ),
+    ),
+    "qutebrowser": Option(
+        delivery=Delivery(["qutebrowser"]),
+        files=Files(
+            {
+                Scope.USER: [
+                    ".config/qutebrowser/config.py",
+                    ".config/qutebrowser/start.html",
+                ],
+            }
+        ),
+    ),
+    "firefox": Option(
+        delivery=Delivery(
+            [
+                "firefox-developer-edition",
+            ]
+        )
+    ),
+    "neovide": Option(
+        delivery=Delivery(["neovide"]),
+        inclusions=["fonts", "neovim", "vulkan"],
+    ),
+    "neovim": Option(
+        delivery=Delivery(
+            [
+                "neovim",
+                "tree-sitter",
+            ]
+        ),
+        files=Files(
+            {
+                Scope.USER: [
+                    ".config/nvim/init.lua",
+                    ".config/nvim/lua/plugins.lua",
+                ],
+            }
+        ),
+        dirs=Dirs({Scope.USER: ["neorg"]}),
+        inclusions=["dev"],
+    ),
+    "dev": Option(
+        delivery=Delivery(
+            [
+                "npm",
+                "nodejs",
+                "zig",
+                "rust",
+                "rust-src",
+                "go",
+                "dotnet-sdk",
+                "make",
+                "ninja",
+                "gcc",
+                "clang",
+                "python",
+                "python-pip",
+                "php",
+                "composer",
+                "jdk-openjdk",
+                "lua",
+                "luarocks",
+                "stylua",
+            ]
+        )
+    ),
+    "texlive": Option(delivery=Delivery(["texlive-most", "texlive-lang"])),
+    "sile": Option(delivery=Delivery(["sile"])),
+    "fonts": Option(
+        delivery=Delivery(
+            [
+                "ttf-nerd-fonts-symbols-2048-em-mono",
+                "noto-fonts",
+                "noto-fonts-extra",
+                "noto-fonts-cjk",
+                "noto-fonts-emoji",
+            ]
+        ),
+        files=Files({Scope.USER: [".config/fontconfig/fonts.conf"]}),
+    ),
+    "vulkan": Option(delivery=Delivery(["vulkan-intel", "vulkan-radeon"])),
+    "essential": Option(
+        delivery=Delivery(
+            [
+                "age",
+                "openssh",
+                "rsync",
+                "procs",
+                "hyperfine",
+                "tmux",
+                "zellij",
+                "helix",
+                "tokei",
+                "hexyl",
+                "systeroid",
+                "entr",
+                "plocate",
+                "pv",
+                "openbsd-netcat",
+                "ffmpeg",
+                "imagemagick",
+                "curl",
+                "jq",
+                "git",
+                "git-delta",
+                "man-db",
+                "man-pages",
+                "bottom",
+                "bat",
+                "ncdu",
+                "firejail",
+                "gitui",
+                "progress",
+                "restic",
+                "zip",
+                "unzip",
+                "fish",
+                "wireguard-tools",
+                "nmap",
+            ]
+        ),
+        files=Files(
+            {
+                Scope.USER: [
+                    ".inputrc",
+                    ".config/fish/config.fish",
+                    ".config/tmux/tmux.conf",
+                    ".config/zellij/config.yaml",
+                    ".config/helix/config.toml",
+                    ".config/git/config",
+                    ".config/git/ignore",
+                    ".ssh/config",
+                ],
+                Scope.SYSTEM: ["etc/pacman.conf", "etc/sudoers", "etc/ssh/sshd_config"],
+            }
+        ),
+        units=Units({Scope.SYSTEM: ["plocate-updatedb.timer"]}),
+        inclusions=["neovim"],
+    ),
+}
+
+if __name__ == "__main__":
+    parser = ArgumentParser()
+
+    subparsers = parser.add_subparsers(dest="subcommand", required=True)
+
+    apply_parser = subparsers.add_parser("apply")
+
+    mode_group = apply_parser.add_mutually_exclusive_group(required=True)
+
+    mode_group.add_argument(
+        "-s",
+        "--symlink",
+        "--symbolic",
+        "--symbolic-link",
+        action="store_true",
+        help="make symbolic links",
+    )
+    mode_group.add_argument(
+        "-H",
+        "--link",
+        "--hard",
+        "--hardlink",
+        "--hard-link",
+        action="store_true",
+        help="make hard links",
+    )
+    mode_group.add_argument("-c", "--copy", action="store_true", help="copy")
+
+    apply_parser.add_argument(
+        "-t", "--target", "--target-dir", "--target-directory", help="target directory"
+    )
+    apply_parser.add_argument("-d", "--dir", "--directory", help="source directory")
+    apply_parser.add_argument(
+        "-f",
+        "--force",
+        action="store_true",
+        help="remove existing destination files in the case of failure and try again",
+    )
+
+    enable_parser = subparsers.add_parser("enable")
+
+    for scope_parser in [apply_parser, enable_parser]:
+        scope_group = scope_parser.add_mutually_exclusive_group()
+
+        scope_group.add_argument("-S", "--system", action="store_true")
+        scope_group.add_argument("-U", "--user", action="store_true")
+
+    install_parser = subparsers.add_parser("install")
+
+    for p in [apply_parser, enable_parser, install_parser]:
+        p.add_argument("choice", nargs="+")
+
+    args = parser.parse_args(sys.argv[1:])
+
+    def recurse(option: Option, action: Callable):
+        for inclusion in option.inclusions:
+            action(OPTIONS[inclusion])
+
+    for choice in args.choice:
+        if args.subcommand in ("apply", "enable"):
+            if not args.system and not args.user:
+                if geteuid() == 0:
+                    scope = Scope.SYSTEM
+                else:
+                    scope = Scope.USER
+            elif args.user:
+                scope = Scope.USER
+            elif args.system:
+                scope = Scope.SYSTEM
+            else:
+                raise ValueError
+
+            if args.subcommand == "apply":
+                dir = (
+                    Path(args.dir) if args.dir is not None else Path.cwd() / str(scope)
+                )
+
+                if args.target is not None:
+                    target = Path(args.target)
+                else:
+                    match scope:
+                        case Scope.USER:
+                            target = Path.home()
+                        case Scope.SYSTEM:
+                            target = Path.cwd().root
+                        case _:
+                            raise ValueError
+
+        match args.subcommand:
+            case "apply":
+
+                def action(option: Option):
+                    if args.copy:
+                        option.files.copy(scope, dir, target, force=args.force)
+                    if args.link:
+                        option.files.hardlink(scope, dir, target, force=args.force)
+                    if args.symlink:
+                        option.files.symlink(scope, dir, target, force=args.force)
+
+                    option.dirs.mkdir(scope, target, exist_ok=True)
+
+                    recurse(option, action)
+
+                action(OPTIONS[choice])
+            case "enable":
+                units = Units({Scope.SYSTEM: [], Scope.USER: []})
+
+                def action(option: Option):
+                    if scope in option.units:
+                        units[scope].extend(option.units[scope])
+
+                    recurse(option, action)
+
+                action(OPTIONS[choice])
+
+                units.enable(scope)
+            case "install":
+                delivery = Delivery([])
+
+                def action(option: Option):
+                    delivery.packages.extend(option.delivery.packages)
+
+                    recurse(option, action)
+
+                action(OPTIONS[choice])
+
+                delivery.install()

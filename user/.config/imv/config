@@ -1,0 +1,5 @@
+[options]
+overlay_font = system-ui:12
+
+[binds]
+c = exec wl-copy -- "$imv_current_file"

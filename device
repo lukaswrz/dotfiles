@@ -1,0 +1,140 @@
+#!/usr/bin/env python
+
+import sys
+from argparse import ArgumentParser
+from pathlib import Path
+from os import environ
+
+DEVICES = {
+    "cave": """workspace 1 output "Chimei Innolux Corporation 0x1239 0x00000000"
+workspace 2 output "Chimei Innolux Corporation 0x1239 0x00000000"
+workspace 3 output "Chimei Innolux Corporation 0x1239 0x00000000"
+workspace 4 output "Chimei Innolux Corporation 0x1239 0x00000000"
+workspace 5 output "Chimei Innolux Corporation 0x1239 0x00000000"
+workspace 6 output "Chimei Innolux Corporation 0x1239 0x00000000"
+workspace 7 output "Chimei Innolux Corporation 0x1239 0x00000000"
+workspace 8 output "Chimei Innolux Corporation 0x1239 0x00000000"
+workspace 9 output "Chimei Innolux Corporation 0x1239 0x00000000"
+workspace 10 output "Chimei Innolux Corporation 0x1239 0x00000000"
+
+output "Chimei Innolux Corporation 0x1239 0x00000000" {
+  mode 1920x1080
+  position 0,0
+}
+
+input * {
+  xkb_layout de
+}
+
+gaps inner 4
+gaps outer 6
+""",
+    "glacier": """workspace 21 output "DENON, Ltd. DENON-AVR 0000000000001"
+workspace 22 output "DENON, Ltd. DENON-AVR 0000000000001"
+workspace 23 output "DENON, Ltd. DENON-AVR 0000000000001"
+workspace 24 output "DENON, Ltd. DENON-AVR 0000000000001"
+workspace 25 output "DENON, Ltd. DENON-AVR 0000000000001"
+workspace 26 output "DENON, Ltd. DENON-AVR 0000000000001"
+workspace 27 output "DENON, Ltd. DENON-AVR 0000000000001"
+workspace 28 output "DENON, Ltd. DENON-AVR 0000000000001"
+workspace 29 output "DENON, Ltd. DENON-AVR 0000000000001"
+workspace 30 output "DENON, Ltd. DENON-AVR 0000000000001"
+
+workspace 11 output "Unknown Optix MAG27CQ 0000000000001"
+workspace 12 output "Unknown Optix MAG27CQ 0000000000001"
+workspace 13 output "Unknown Optix MAG27CQ 0000000000001"
+workspace 14 output "Unknown Optix MAG27CQ 0000000000001"
+workspace 15 output "Unknown Optix MAG27CQ 0000000000001"
+workspace 16 output "Unknown Optix MAG27CQ 0000000000001"
+workspace 17 output "Unknown Optix MAG27CQ 0000000000001"
+workspace 18 output "Unknown Optix MAG27CQ 0000000000001"
+workspace 19 output "Unknown Optix MAG27CQ 0000000000001"
+workspace 20 output "Unknown Optix MAG27CQ 0000000000001"
+
+workspace 1 output "Goldstar Company Ltd LG HDR 4K 0x00008FEE"
+workspace 2 output "Goldstar Company Ltd LG HDR 4K 0x00008FEE"
+workspace 3 output "Goldstar Company Ltd LG HDR 4K 0x00008FEE"
+workspace 4 output "Goldstar Company Ltd LG HDR 4K 0x00008FEE"
+workspace 5 output "Goldstar Company Ltd LG HDR 4K 0x00008FEE"
+workspace 6 output "Goldstar Company Ltd LG HDR 4K 0x00008FEE"
+workspace 7 output "Goldstar Company Ltd LG HDR 4K 0x00008FEE"
+workspace 8 output "Goldstar Company Ltd LG HDR 4K 0x00008FEE"
+workspace 9 output "Goldstar Company Ltd LG HDR 4K 0x00008FEE"
+workspace 10 output "Goldstar Company Ltd LG HDR 4K 0x00008FEE"
+
+output "DENON, Ltd. DENON-AVR 0000000000001" {
+  mode 1920x1080
+  position -1920,1080
+}
+
+output "Unknown Optix MAG27CQ 0000000000001" {
+  mode 2560x1440@59.951Hz
+  # position 3104,306
+  position 3840,380
+}
+
+output "Goldstar Company Ltd LG HDR 4K 0x00008FEE" {
+  mode 3840x2160@59.997Hz
+  position 0,0
+  # scale 1.2371134
+}
+
+input * {
+  xkb_layout de
+}
+
+gaps inner 12
+gaps outer 14
+""",
+    "denkplatte": """workspace 1 output "Unknown 0x0521 0x00000000"
+workspace 2 output "Unknown 0x0521 0x00000000"
+workspace 3 output "Unknown 0x0521 0x00000000"
+workspace 4 output "Unknown 0x0521 0x00000000"
+workspace 5 output "Unknown 0x0521 0x00000000"
+workspace 6 output "Unknown 0x0521 0x00000000"
+workspace 7 output "Unknown 0x0521 0x00000000"
+workspace 8 output "Unknown 0x0521 0x00000000"
+workspace 9 output "Unknown 0x0521 0x00000000"
+workspace 10 output "Unknown 0x0521 0x00000000"
+
+output "Unknown 0x0521 0x00000000" {
+  mode 1920x1080
+  position 0,0
+}
+
+input * {
+  xkb_layout de
+}
+
+gaps inner 4
+gaps outer 6
+""",
+}
+
+if __name__ == "__main__":
+    parser = ArgumentParser()
+
+    subparsers = parser.add_subparsers(dest="subcommand", required=True)
+
+    for key, config in DEVICES.items():
+        key_parser = subparsers.add_parser(key)
+        key_parser.add_argument(
+            "-f", "--force", action="store_true", help="overwrite files"
+        )
+
+    args = parser.parse_args(sys.argv[1:])
+
+    target = (
+        Path(environ.get("XDG_CONFIG_HOME", Path.home() / ".config"))
+        / "sway"
+        / "custom"
+        / "device.conf"
+    )
+
+    if target.exists():
+        if not args.force:
+            raise FileExistsError
+    else:
+        target.touch()
+
+    target.write_text(DEVICES[args.subcommand])

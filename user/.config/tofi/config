@@ -1,0 +1,13 @@
+width = 100%
+height = 100%
+border-width = 0
+outline-width = 2
+padding-left = 35%
+padding-top = 35%
+result-spacing = 20
+num-results = 5
+font = monospace
+background-color = #090909a0
+text-color = #c5c8c6
+outline-color = #121212a0
+selection-color = #3971ed

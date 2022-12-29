@@ -1,0 +1,25 @@
+#!/usr/bin/env oil
+
+if (len(ARGV) !== 0) {
+  exit 1
+}
+
+const uid = $(id --user)
+
+export MOZ_ENABLE_WAYLAND=1
+export MOZ_DBUS_REMOTE=1
+export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
+export _JAVA_AWT_WM_NONREPARENTING=1
+export SDL_VIDEODRIVER=wayland
+export NEOVIDE_MULTIGRID=true
+export EDITOR=nvim
+export VISUAL=nvim
+export GTK_THEME=Adwaita:dark
+export BEMENU_OPTS='--tb #3971ed --tf #1d1f21 --fb #1d1f21 --ff #c5c8c6 --nb #1d1f21 --nf #c5c8c6 --hb #282a2e --hf #ffffff --sb #1d1f21 --sf #c5c8c6 --scb #373b41 --scf #3971ed --scrollbar autohide --fn monospace'
+export WOBSOCK="${XDG_RUNTIME_DIR:-/run/user/$uid}/wob.sock"
+
+export XDG_CURRENT_DESKTOP=sway
+export XDG_SESSION_TYPE=wayland
+export XDG_SESSION_DESKTOP="${XDG_SESSION_DESKTOP:-sway}"
+
+sway

@@ -1,0 +1,11 @@
+#!/usr/bin/env oil
+
+for arg in @ARGV {
+  sudo ./plonk apply --system --copy --force -- $arg
+  sudo pacman -Syu
+  ./plonk install -- $arg
+  sudo ./plonk enable --system -- $arg
+
+  ./plonk apply --user --symbolic --force -- $arg
+  ./plonk enable --user -- $arg
+}

@@ -1,0 +1,15 @@
+#!/usr/bin/env oil
+
+if (len(ARGV) > 0) {
+  exit 1
+}
+
+const date = $(date +'%Y-%m-%d_%H-%M-%S_%N')
+const file = "${date}_${USER}@${HOSTNAME}_grabraw.png"
+const path = "$(xdg-user-dir PICTURES)/$file"
+
+grim -t png - | tee -- $path | wl-copy
+
+fork {
+  notify-send --icon $path -- "$file copied to clipboard."
+}

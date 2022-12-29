@@ -1,0 +1,20 @@
+#!/usr/bin/env oil
+
+if (len(ARGV) > 0) {
+  exit 1
+}
+
+const position = $(slurp -b 00000000 -p)
+
+const color = $(
+  grim -g $position -t png - |
+  convert - -format '%[pixel:p{0,0}]' txt:- |
+  tail -n 1 |
+  cut -d ' ' -f 4
+)
+
+write -n -- $color | wl-copy --trim-newline
+
+fork {
+  notify-send "$color copied to clipboard."
+}

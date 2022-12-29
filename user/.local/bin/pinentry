@@ -1,0 +1,3 @@
+#!/usr/bin/env oil
+
+exec pinentry-curses @ARGV
