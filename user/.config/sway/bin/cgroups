@@ -55,7 +55,7 @@ from i3ipc.aio import Con, Connection
 from psutil import Process
 from tenacity import retry, retry_if_exception_type, stop_after_attempt
 
-
+logging.basicConfig()
 LOG = logging.getLogger("assign-cgroups")
 SD_BUS_NAME = "org.freedesktop.systemd1"
 SD_OBJECT_PATH = "/org/freedesktop/systemd1"
@@ -227,7 +227,7 @@ async def main():
     try:
         await conn.main()
     except (ConnectionError, EOFError):
-        logging.exception("Connection to the Sway IPC was lost")
+        logging.error("Connection to the Sway IPC was lost")
 
 
 if __name__ == "__main__":
