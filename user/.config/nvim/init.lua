@@ -184,4 +184,10 @@ vim.keymap.set("i", "<C-j>", "<Down>")
 vim.keymap.set("i", "<C-k>", "<Up>")
 vim.keymap.set("i", "<C-l>", "<Right>")
 
+
+vim.keymap.set("n", "<M-h>", "<C-w>h")
+vim.keymap.set("n", "<M-j>", "<C-w>j")
+vim.keymap.set("n", "<M-k>", "<C-w>k")
+vim.keymap.set("n", "<M-l>", "<C-w>l")
+
 vim.keymap.set("n", "Y", "y$")
