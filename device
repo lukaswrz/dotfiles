@@ -40,27 +40,27 @@ workspace 28 output "DENON, Ltd. DENON-AVR 0000000000001"
 workspace 29 output "DENON, Ltd. DENON-AVR 0000000000001"
 workspace 30 output "DENON, Ltd. DENON-AVR 0000000000001"
 
-workspace 11 output "Unknown Optix MAG27CQ 0000000000001"
-workspace 12 output "Unknown Optix MAG27CQ 0000000000001"
-workspace 13 output "Unknown Optix MAG27CQ 0000000000001"
-workspace 14 output "Unknown Optix MAG27CQ 0000000000001"
-workspace 15 output "Unknown Optix MAG27CQ 0000000000001"
-workspace 16 output "Unknown Optix MAG27CQ 0000000000001"
-workspace 17 output "Unknown Optix MAG27CQ 0000000000001"
-workspace 18 output "Unknown Optix MAG27CQ 0000000000001"
-workspace 19 output "Unknown Optix MAG27CQ 0000000000001"
-workspace 20 output "Unknown Optix MAG27CQ 0000000000001"
+workspace 11 output "Microstep Optix MAG27CQ 0000000000001"
+workspace 12 output "Microstep Optix MAG27CQ 0000000000001"
+workspace 13 output "Microstep Optix MAG27CQ 0000000000001"
+workspace 14 output "Microstep Optix MAG27CQ 0000000000001"
+workspace 15 output "Microstep Optix MAG27CQ 0000000000001"
+workspace 16 output "Microstep Optix MAG27CQ 0000000000001"
+workspace 17 output "Microstep Optix MAG27CQ 0000000000001"
+workspace 18 output "Microstep Optix MAG27CQ 0000000000001"
+workspace 19 output "Microstep Optix MAG27CQ 0000000000001"
+workspace 20 output "Microstep Optix MAG27CQ 0000000000001"
 
-workspace 1 output "Goldstar Company Ltd LG HDR 4K 0x00008FEE"
-workspace 2 output "Goldstar Company Ltd LG HDR 4K 0x00008FEE"
-workspace 3 output "Goldstar Company Ltd LG HDR 4K 0x00008FEE"
-workspace 4 output "Goldstar Company Ltd LG HDR 4K 0x00008FEE"
-workspace 5 output "Goldstar Company Ltd LG HDR 4K 0x00008FEE"
-workspace 6 output "Goldstar Company Ltd LG HDR 4K 0x00008FEE"
-workspace 7 output "Goldstar Company Ltd LG HDR 4K 0x00008FEE"
-workspace 8 output "Goldstar Company Ltd LG HDR 4K 0x00008FEE"
-workspace 9 output "Goldstar Company Ltd LG HDR 4K 0x00008FEE"
-workspace 10 output "Goldstar Company Ltd LG HDR 4K 0x00008FEE"
+workspace 1 output "LG Electronics LG HDR 4K 0x00008FEE"
+workspace 2 output "LG Electronics LG HDR 4K 0x00008FEE"
+workspace 3 output "LG Electronics LG HDR 4K 0x00008FEE"
+workspace 4 output "LG Electronics LG HDR 4K 0x00008FEE"
+workspace 5 output "LG Electronics LG HDR 4K 0x00008FEE"
+workspace 6 output "LG Electronics LG HDR 4K 0x00008FEE"
+workspace 7 output "LG Electronics LG HDR 4K 0x00008FEE"
+workspace 8 output "LG Electronics LG HDR 4K 0x00008FEE"
+workspace 9 output "LG Electronics LG HDR 4K 0x00008FEE"
+workspace 10 output "LG Electronics LG HDR 4K 0x00008FEE"
 
 output "DENON, Ltd. DENON-AVR 0000000000001" {
   mode 1920x1080
@@ -73,7 +73,7 @@ output "Unknown Optix MAG27CQ 0000000000001" {
   position 3840,380
 }
 
-output "Goldstar Company Ltd LG HDR 4K 0x00008FEE" {
+output "LG Electronics LG HDR 4K 0x00008FEE" {
   mode 3840x2160@59.997Hz
   position 0,0
   # scale 1.2371134
