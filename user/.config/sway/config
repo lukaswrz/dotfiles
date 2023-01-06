@@ -7,8 +7,8 @@ exec swayidle \
   unlock 'notify-send Unlocked...' \
   before-sleep 'loginctl lock-session' \
   timeout 595 'notify-send Ni\ ni...' \
-  timeout 600 'loginctl lock-session && swaymsg output \* dpms off' \
-  resume 'swaymsg output \* dpms on'
+  timeout 600 'loginctl lock-session && swaymsg output \* power off' \
+  resume 'swaymsg output \* power on'
 
 # Modifiers.
 
