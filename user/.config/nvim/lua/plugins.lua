@@ -290,7 +290,7 @@ local function init()
 			vim.keymap.set("n", "<C-k>", "<Cmd>lua vim.lsp.buf.signature_help()<CR>")
 			vim.keymap.set("n", "<C-n>", "<Cmd>lua vim.lsp.diagnostic.goto_prev()<CR>")
 			vim.keymap.set("n", "<C-p>", "<Cmd>lua vim.lsp.diagnostic.goto_next()<CR>")
-			vim.keymap.set("n", "<Leader>a", "<Cmd>lua vim.lsp.buf.formatting()<CR>")
+			vim.keymap.set("n", "<Leader>a", "<Cmd>lua vim.lsp.buf.format()<CR>")
 		end,
 	})
 	use({
