@@ -45,7 +45,7 @@ client.background       $base07
 
 # Input.
 
-input * {
+input "type:keyboard" {
   repeat_rate 45
   repeat_delay 300
   xkb_options compose:rwin

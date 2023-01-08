@@ -4,8 +4,8 @@ if (len(ARGV) !== 0) {
   exit 1
 }
 
-const output = $(outputassign list | bemenu --ignorecase --list 10 --prompt outputs)
+const output = $(~/.config/sway/bin/outputassign list | bemenu --ignorecase --list 10 --prompt outputs)
 
 const pos = $(seq 1 12 | bemenu --list 12 --prompt pos)
 
-outputassign set -- $output $pos
+~/.config/sway/bin/outputassign set -- $output $pos
