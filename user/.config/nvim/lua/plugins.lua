@@ -239,7 +239,7 @@ local function init()
 					"zls",
 					"sumneko_lua",
 					"gopls",
-					"psalm",
+					"phpactor",
 				},
 				automatic_installation = false,
 			})
