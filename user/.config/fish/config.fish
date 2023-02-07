@@ -3,6 +3,13 @@ if status is-interactive
   set -U fish_greeting
   fish_vi_key_bindings
 
+  bind \ee edit_command_buffer
+
+  set fish_cursor_default     block      blink
+  set fish_cursor_insert      line       blink
+  set fish_cursor_replace_one underscore blink
+  set fish_cursor_visual      block
+
   abbr --add --global l 'ls'
   abbr --add --global lsa 'ls -a'
   abbr --add --global la 'ls -a'

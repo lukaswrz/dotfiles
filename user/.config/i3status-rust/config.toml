@@ -27,7 +27,7 @@ format = "{combo}"
 
 [[block]]
 block = "net"
-format = "{ssid} {signal_strength} {ip} {speed_up;M*b} {speed_down;M*b}"
+format = "{ssid} {signal_strength} {speed_up;M*b} {speed_down;M*b}"
 interval = 1
 
 [[block]]

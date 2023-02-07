@@ -512,6 +512,7 @@ OPTIONS = {
                 Scope.USER: [
                     ".inputrc",
                     ".config/fish/config.fish",
+                    ".config/fish/functions/fish_prompt.fish",
                     ".config/tmux/tmux.conf",
                     ".config/zellij/config.yaml",
                     ".config/helix/config.toml",
