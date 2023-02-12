@@ -1,0 +1,7 @@
+systemd-networkd.service
+
+bluetooth.service
+
+cups.service
+
+plocate-updatedb.timer

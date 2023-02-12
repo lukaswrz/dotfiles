@@ -1,10 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/env oil
 
-import sys
-from pathlib import Path
-from argparse import ArgumentParser
+if (len(ARGV) > 0) {
+    exit 1
+}
 
-USERJS = """
+const userjs = '''
 user_pref('signon.prefillForms', false);
 user_pref('signon.rememberSignons', false);
 user_pref('privacy.webrtc.legacyGlobalIndicator', false);
@@ -42,36 +42,8 @@ user_pref('app.normandy.api_url', '');
 user_pref('breakpad.reportURL', '');
 user_pref('browser.tabs.crashReporting.sendReport', false);
 user_pref('browser.crashReports.unsubmittedCheck.autoSubmit2', false);
-"""
+'''
 
-if __name__ == "__main__":
-    parser = ArgumentParser()
-    parser.add_argument(
-        "-t",
-        "--target",
-        "--target-dir",
-        "--target-directory",
-        help="target directory where profiles are located",
-    )
-    parser.add_argument("-f", "--force", action="store_true", help="overwrite files")
-
-    args = parser.parse_args(sys.argv[1:])
-
-    if args.target is not None:
-        target = Path(args.target)
-    else:
-        target = Path.home() / ".mozilla" / "firefox"
-
-    for pattern in ["*.default", "*.default-release", "*.dev-edition-default"]:
-        for dest_dir in target.glob(pattern):
-            dest_dir = Path(dest_dir)
-            dest_file = dest_dir / "user.js"
-
-            if dest_file.exists():
-                if args.force:
-                    dest_file.write_text(USERJS)
-                else:
-                    raise FileExistsError
-            else:
-                dest_file.touch()
-                dest_file.write_text(USERJS)
+for dir in ~/.mozilla/firefox/*.default ~/.mozilla/firefox/*.default-release ~/.mozilla/firefox/*.dev-edition-default {
+    write -- $userjs > $dir/user.js
+}

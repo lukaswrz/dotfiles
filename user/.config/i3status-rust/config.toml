@@ -1,9 +1,6 @@
 icons = "material-nf"
 icons_format = " <span font_family=\"Symbols Nerd Font Mono\">{icon}</span> "
 
-
-[theme]
-name = "solarized-dark"
 [theme.overrides]
 idle_bg = "#0e0e0ef0"
 idle_fg = "#c5c8c6"

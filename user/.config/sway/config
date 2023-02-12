@@ -63,6 +63,7 @@ include modes/resize.conf
 
 # Rules.
 
+for_window [app_id="alacrittyfloat"] floating enable
 for_window [app_id="neovidefloat"] floating enable
 for_window [app_id="mpvfloat"] floating enable
 
@@ -105,7 +106,7 @@ bindsym $mod+d exec tofi-drun --prompt-text 'drun: ' --fuzzy-match true | xargs 
 bindsym $mod+Shift+d exec tofi-run --prompt-text 'run: ' --fuzzy-match true | xargs swaymsg exec --
 
 bindsym $mod+Return exec alacritty
-bindsym $mod+Shift+Return exec neovide --nofork --geometry 80x24 --wayland_app_id neovidefloat
+bindsym $mod+Shift+Return exec alacritty --class alacrittyfloat
 
 bindsym $mod+Shift+q kill
 

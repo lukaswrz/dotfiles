@@ -86,5 +86,5 @@ function fish_prompt
     end
   end
 
-  echo -n -s $cwd $repo_info ' ' $prompt ' '$normal
+  echo -n -s -- $cwd $repo_info ' ' $prompt ' '$normal
 end

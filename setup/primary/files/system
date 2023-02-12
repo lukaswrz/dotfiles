@@ -1,0 +1,3 @@
+etc/pacman.conf
+etc/sudoers
+etc/ssh/sshd_config
