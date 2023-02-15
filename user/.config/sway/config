@@ -167,9 +167,9 @@ bindsym --release Print exec ~/.config/sway/bin/grabraw
 bindsym --release Shift+Print exec ~/.config/sway/bin/grabregion
 bindsym --release Control+Shift+Print exec ~/.config/sway/bin/grabcolor
 
-bindsym $mod+i exec ~/.config/sway/bin/anmenu
-bindsym $mod+p exec ~/.config/sway/bin/mojimenu
-bindsym $mod+o exec ~/.config/sway/bin/utputmenu
+bindsym $mod+i exec ~/.config/sway/bin/manmenu
+bindsym $mod+p exec ~/.config/sway/bin/emojimenu
+bindsym $mod+o exec ~/.config/sway/bin/outputmenu
 bindsym $mod+Shift+o exec ~/.config/sway/bin/xwaylandprimarymenu
 
 bindsym XF86PowerOff exec loginctl lock-session
