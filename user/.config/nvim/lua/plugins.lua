@@ -237,7 +237,7 @@ local function init()
 					"pyright",
 					"tsserver",
 					"zls",
-					"sumneko_lua",
+					"lua_ls",
 					"gopls",
 					"phpactor",
 				},
