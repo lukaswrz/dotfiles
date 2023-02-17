@@ -1,5 +1,4 @@
 icons = "material-nf"
-icons_format = " <span font_family=\"Symbols Nerd Font Mono\">{icon}</span> "
 
 [theme.overrides]
 idle_bg = "#0e0e0ef0"

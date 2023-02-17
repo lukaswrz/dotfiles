@@ -35,7 +35,7 @@ vim.opt.listchars = {
 	precedes = "⟨",
 }
 
-vim.opt.guifont = "monospace,Symbols Nerd Font Mono:h12"
+vim.opt.guifont = "programming:h12"
 vim.g.neovide_cursor_vfx_mode = "wireframe"
 vim.g.neovide_cursor_animation_length = 0.01
 vim.g.neovide_cursor_trail_length = 1.0

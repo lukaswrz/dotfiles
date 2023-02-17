@@ -92,7 +92,8 @@ stylua
 texlive-most
 texlive-lang
 
-ttf-nerd-fonts-symbols-2048-em-mono
+ttf-iosevka-nerd
+ttf-noto-nerd
 noto-fonts
 noto-fonts-extra
 noto-fonts-cjk

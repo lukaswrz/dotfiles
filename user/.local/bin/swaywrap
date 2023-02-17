@@ -13,7 +13,7 @@ export NEOVIDE_MULTIGRID=true
 export EDITOR=nvim
 export VISUAL=nvim
 export GTK_THEME=Adwaita:dark
-export BEMENU_OPTS='--tb #3971ed --tf #1d1f21 --fb #1d1f21 --ff #c5c8c6 --nb #1d1f21 --nf #c5c8c6 --hb #282a2e --hf #ffffff --sb #1d1f21 --sf #c5c8c6 --scb #373b41 --scf #3971ed --scrollbar autohide --fn monospace'
+export BEMENU_OPTS='--tb #3971ed --tf #1d1f21 --fb #1d1f21 --ff #c5c8c6 --nb #1d1f21 --nf #c5c8c6 --hb #282a2e --hf #ffffff --sb #1d1f21 --sf #c5c8c6 --scb #373b41 --scf #3971ed --scrollbar autohide --fn system-ui'
 export WOBSOCK=$XDG_RUNTIME_DIR/wob.sock
 
 export XDG_CURRENT_DESKTOP=sway
