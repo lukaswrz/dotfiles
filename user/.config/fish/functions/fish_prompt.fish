@@ -1,4 +1,8 @@
 function fish_prompt
+  if test $CMD_DURATION -gt 10000
+    echo -ne '\a'
+  end
+
   set -l __last_command_exit_status $status
 
   if not set -q -g __fish_arrow_functions_defined
