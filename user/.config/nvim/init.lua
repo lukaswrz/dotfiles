@@ -1,7 +1,7 @@
 vim.g.loaded = 1
 vim.g.loaded_netrwPlugin = 1
 
-require("plugins")
+local plugins = require("plugins")
 
 vim.opt.background = "dark"
 
@@ -139,23 +139,23 @@ vim.api.nvim_create_autocmd("TermOpen", {
 
 vim.api.nvim_create_user_command("PackerInstall", function()
 	vim.cmd([[packadd packer.nvim]])
-	require("plugins").install()
+	plugins.install()
 end, { bang = true })
 vim.api.nvim_create_user_command("PackerUpdate", function()
 	vim.cmd([[packadd packer.nvim]])
-	require("plugins").update()
+	plugins.update()
 end, { bang = true })
 vim.api.nvim_create_user_command("PackerSync", function()
 	vim.cmd([[packadd packer.nvim]])
-	require("plugins").sync()
+	plugins.sync()
 end, { bang = true })
 vim.api.nvim_create_user_command("PackerClean", function()
 	vim.cmd([[packadd packer.nvim]])
-	require("plugins").clean()
+	plugins.clean()
 end, { bang = true })
 vim.api.nvim_create_user_command("PackerCompile", function()
 	vim.cmd([[packadd packer.nvim]])
-	require("plugins").compile()
+	plugins.compile()
 end, { bang = true })
 
 vim.g.mapleader = vim.api.nvim_replace_termcodes("<Space>", true, false, true)
