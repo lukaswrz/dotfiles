@@ -18,7 +18,7 @@ separator_fg = "auto"
 
 [[block]]
 block = "focused_window"
-format = "{ $title $marks $visible_marks |}"
+format = "{ $title $visible_marks |}"
 
 [[block]]
 block = "net"
