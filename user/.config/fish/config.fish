@@ -42,7 +42,7 @@ if status is-interactive
   abbr --add --global cd. 'cd .'
   abbr --add --global cd.. 'cd ..'
 
-  function ls; command ls --classify=auto --color=auto --hyperlink=auto $argv; end
+  function ls; command ls --classify=auto --color=auto $argv; end
   function ffmpeg; command ffmpeg -hide_banner $argv; end
   function ffprobe; command ffprobe -hide_banner $argv; end
   function ffplay; command ffprobe -hide_banner $argv; end
