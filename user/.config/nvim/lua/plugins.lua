@@ -61,7 +61,6 @@ local function init()
 					"markdown",
 					"lua",
 					"vim",
-					"help",
 					"rst",
 					"rust",
 					"toml",
