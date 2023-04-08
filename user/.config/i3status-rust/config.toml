@@ -2,7 +2,7 @@
 icons = "material-nf"
 
 [theme.overrides]
-idle_bg = "#0e0e0ef0"
+idle_bg = "#000000"
 idle_fg = "#c5c8c6"
 info_bg = "#3971ED"
 info_fg = "#0e0e0ef0"
