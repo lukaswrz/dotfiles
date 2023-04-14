@@ -44,6 +44,6 @@ user_pref('browser.tabs.crashReporting.sendReport', false);
 user_pref('browser.crashReports.unsubmittedCheck.autoSubmit2', false);
 '''
 
-for dir in ~/.mozilla/firefox/*.default ~/.mozilla/firefox/*.default-release ~/.mozilla/firefox/*.dev-edition-default {
+for dir in ~/.mozilla/firefox/*.default ~/.mozilla/firefox/*.default-release ~/.mozilla/firefox/*.dev-edition-default ~/.var/app/org.mozilla.firefox/.mozilla/firefox/*.default ~/.var/app/org.mozilla.firefox/.mozilla/firefox/*.default-release ~/.var/app/org.mozilla.firefox/.mozilla/firefox/*.dev-edition-default {
     write -- $userjs > $dir/user.js
 }

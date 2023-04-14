@@ -89,9 +89,6 @@ lua
 luarocks
 stylua
 
-texlive-most
-texlive-lang
-
 ttf-iosevka-nerd
 ttf-noto-nerd
 noto-fonts
