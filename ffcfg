@@ -42,6 +42,8 @@ user_pref('app.normandy.api_url', '');
 user_pref('breakpad.reportURL', '');
 user_pref('browser.tabs.crashReporting.sendReport', false);
 user_pref('browser.crashReports.unsubmittedCheck.autoSubmit2', false);
+user_pref("network.http.referer.XOriginPolicy", 1);
+user_pref("network.http.referer.XOriginTrimmingPolicy", 0);
 '''
 
 for dir in ~/.mozilla/firefox/*.default ~/.mozilla/firefox/*.default-release ~/.mozilla/firefox/*.dev-edition-default ~/.var/app/org.mozilla.firefox/.mozilla/firefox/*.default ~/.var/app/org.mozilla.firefox/.mozilla/firefox/*.default-release ~/.var/app/org.mozilla.firefox/.mozilla/firefox/*.dev-edition-default {
