@@ -308,9 +308,8 @@ local function init()
 					"black",
 					"gitlint",
 				},
-				automatic_setup = true,
+				automatic_installation = true,
 			})
-			mason_null_ls.setup_handlers()
 
 			null_ls.setup()
 		end,
@@ -328,9 +327,9 @@ local function init()
 				ensure_installed = {
 					"python",
 				},
-				automatic_setup = true,
+				automatic_installation = true,
+				handlers = nil
 			})
-			mason_nvim_dap.setup_handlers()
 		end,
 	})
 	use({
@@ -492,13 +491,13 @@ local function init()
 			neorg.setup({
 				load = {
 					["core.defaults"] = {},
-					["core.norg.concealer"] = {},
-					["core.norg.completion"] = {
+					["core.concealer"] = {},
+					["core.completion"] = {
 						config = {
 							engine = "nvim-cmp",
 						},
 					},
-					["core.norg.dirman"] = {
+					["core.dirman"] = {
 						config = {
 							workspaces = {
 								notes = "~/neorg",
