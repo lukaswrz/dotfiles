@@ -1,80 +1,54 @@
-sway
-swaybg
-swaylock
-swayidle
-zathura
-zathura-pdf-mupdf
-grim
-imv
-wtype
-wl-clipboard
-xorg-xwayland
-xorg-xrandr
-slurp
-mako
-wob
-tofi
-bemenu
-bemenu-wayland
-i3status-rust
-mpd
-mpc
-ncmpcpp
-wf-recorder
-playerctl
-alacritty
-xdg-desktop-portal
-xdg-desktop-portal-wlr
-xdg-desktop-portal-gtk
-brightnessctl
-pamixer
-pavucontrol
-mpv
-mpv-mpris
-libnotify
-pipewire
-pipewire-alsa
-pipewire-jack
-pipewire-pulse
-wireplumber
-xdg-utils
-xdg-user-dirs
-wireguard-tools
-aerc
-newsboat
-rbw
-uni
+# Plasma
+plasma-meta
+plasma-wayland-session
+egl-wayland
+konsole
+discover
+dolphin
+spectacle
+colord-kde
+flatpak-kcm
+xwaylandvideobridge-bin
+print-manager
+system-config-printer
+kdialog
+
+# Package management
 flatpak
-syncthing
-python-dbus-next
-python-i3ipc
-python-psutil
-python-tenacity
 
-qt5-base
-qt5-wayland
-qt6-base
-qt6-wayland
-
+# Connectivity
+networkmanager
 bluez
 bluez-utils
 
+# Services
+pipewire
+pipewire-alsa
+pipewire-pulse
+pipewire-jack
+wireplumber
 cups
 
-qutebrowser
+# Miscellaneous
+ghostscript
+typst
+vscodium-bin
 
-firefox-developer-edition
+# Drivers
+vulkan-intel
+vulkan-radeon
 
-neovide
+# Fonts
+noto-fonts
+noto-fonts-extra
+noto-fonts-cjk
+noto-fonts-emoji
 
-neovim
-tree-sitter
-
+# Development
 npm
 nodejs
 zig
-rust
-rust-src
+rustup
 go
 dotnet-sdk
 make
@@ -90,29 +64,22 @@ lua
 luarocks
 stylua
 
-ttf-iosevka-nerd
-ttf-noto-nerd
-noto-fonts
-noto-fonts-extra
-noto-fonts-cjk
-noto-fonts-emoji
+# LaTeX
+# texlive-most
+# texlive-lang
 
-vulkan-intel
-vulkan-radeon
-
+# Tools
 age
 openssh
 rsync
 procs
 hyperfine
 tmux
-zellij
 helix
 tokei
 hexyl
 systeroid
 entr
-plocate
 pv
 openbsd-netcat
 ffmpeg
@@ -135,4 +102,3 @@ unzip
 fish
 wireguard-tools
 nmap
-networkmanager

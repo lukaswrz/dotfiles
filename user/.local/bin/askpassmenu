@@ -1,3 +1,3 @@
 #!/usr/bin/env oil
 
-write -n '' | bemenu --password --prompt 'askpass'
+exec kdialog --password Askpass

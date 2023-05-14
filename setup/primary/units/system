@@ -1,4 +1,3 @@
 NetworkManager.service
 bluetooth.service
 cups.service
-plocate-updatedb.timer

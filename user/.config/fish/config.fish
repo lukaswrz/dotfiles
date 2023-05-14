@@ -3,6 +3,11 @@ if status is-interactive
   set -U fish_greeting
   fish_vi_key_bindings
 
+  fish_add_path --prepend ~/.local/bin
+
+  set -x EDITOR helix
+  set -x VISUAL helix
+
   bind \ee edit_command_buffer
 
   set fish_cursor_default     block      blink
@@ -23,7 +28,7 @@ if status is-interactive
   abbr --add --global rm 'rm -i'
   abbr --add --global rmr 'rm -ri'
   abbr --add --global rr 'rm -ri'
-  abbr --add --global v 'neovide'
+  abbr --add --global v 'helix'
   abbr --add --global g 'git'
   abbr --add --global gc 'git commit'
   abbr --add --global gco 'git checkout'
@@ -46,32 +51,4 @@ if status is-interactive
   function ffmpeg; command ffmpeg -hide_banner $argv; end
   function ffprobe; command ffprobe -hide_banner $argv; end
   function ffplay; command ffprobe -hide_banner $argv; end
-end
-
-if begin
-  status is-login; and not set -q ZELLIJ
-end; or begin
-  set -q SSH_CLIENT; and set -q SSH_CONNECTION; and set -q SSH_TTY
-end
-  fish_add_path --prepend ~/.local/bin
-
-  set -x SUDO_ASKPASS ~/.local/bin/askpassmenu
-  set -x EDITOR nvim
-  set -x VISUAL nvim
-
-  set -x XDG_CONFIG_HOME "$HOME/.config"
-  set -x XDG_CACHE_HOME "$HOME/.cache"
-  set -x XDG_DATA_HOME "$HOME/.local/share"
-end
-
-if status is-login; and not set -q ZELLIJ; and not begin
-  set -q SSH_CLIENT; or set -q SSH_CONNECTION; or set -q SSH_TTY
-end
-  if type -q sway
-    if test (tty) = '/dev/tty1'
-      begin
-        swaywrap
-      end
-    end
-  end
 end
