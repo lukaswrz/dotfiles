@@ -48,6 +48,6 @@ for setup in @ARGV {
                 setvar units = units ++ [line]
             }
         } < $units_file
-        systemctl --$mode enable --now -- @units
+        systemctl --$mode enable -- @units
     }
 }
