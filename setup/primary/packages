@@ -12,6 +12,9 @@ xwaylandvideobridge-bin
 print-manager
 system-config-printer
 kdialog
+ark
+gwenview
+kate
 
 # Package management
 flatpak
