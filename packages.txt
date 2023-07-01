@@ -1,53 +1,21 @@
-# Plasma
 plasma-meta
 plasma-wayland-session
-egl-wayland
 konsole
 discover
 dolphin
 spectacle
-colord-kde
 flatpak-kcm
-xwaylandvideobridge-bin
-print-manager
-system-config-printer
+sddm-kcm
 kdialog
 ark
 gwenview
 kate
 
-# Package management
-flatpak
-
-# Connectivity
-networkmanager
-bluez
-bluez-utils
-
-# Services
-pipewire
-pipewire-alsa
-pipewire-pulse
-pipewire-jack
-wireplumber
-cups
-
-# Miscellaneous
-ghostscript
-typst
-vscodium-bin
-
-# Drivers
-vulkan-intel
-vulkan-radeon
-
-# Fonts
 noto-fonts
 noto-fonts-extra
 noto-fonts-cjk
 noto-fonts-emoji
 
-# Development
 npm
 nodejs
 zig
@@ -67,11 +35,6 @@ lua
 luarocks
 stylua
 
-# LaTeX
-# texlive-most
-# texlive-lang
-
-# Tools
 age
 openssh
 rsync
@@ -90,7 +53,6 @@ imagemagick
 curl
 jq
 git
-git-delta
 man-db
 man-pages
 bottom
@@ -105,3 +67,6 @@ unzip
 fish
 wireguard-tools
 nmap
+flatpak
+typst
+vscodium-bin
