@@ -156,16 +156,26 @@ if __name__ == "__main__":
 
 
     if chosen("mpv"):
-        mpvdir = Path.home() / ".var" / "app" / "io.mpv.Mpv"
-        if mpvdir.is_dir():
-            mpvconf = mpvdir / "config" / "mpv" / "mpv.conf"
-            if not mpvconf.is_file():
-                mpvconf.parent.mkdir(parents=True, exist_ok=True)
-                mpvconf.write_text(dedent("""\
+        mpv_parent = Path.home() / ".var" / "app" / "io.mpv.Mpv"
+        if mpv_parent.is_dir():
+            mpv_conf = mpv_parent / "config" / "mpv" / "mpv.conf"
+            if not mpv_conf.is_file():
+                mpv_conf.parent.mkdir(parents=True, exist_ok=True)
+                mpv_conf.write_text(dedent("""\
                     force-window=immediate
-                    save-position-on-quit
-                    screenshot-template="%f_%wH%wM%wS.%wT"
                     keep-open=yes
+                    save-position-on-quit=yes
+
+                    screenshot-template=%f_%wH%wM%wS.%wT
+
+                    scale=ewa_lanczossharp
+                    cscale=ewa_lanczossharp
+                    tscale=oversample
+
+                    interpolation=yes
+                    video-sync=display-resample
+                    vo=gpu
+                    profile=gpu-hq
                 """))
 
     if chosen("readline"):
@@ -266,3 +276,15 @@ if __name__ == "__main__":
                         user_pref("network.http.referer.XOriginPolicy", 1);
                         user_pref("network.http.referer.XOriginTrimmingPolicy", 0);
                     """))
+
+    if chosen("helix"):
+        helix_config = (
+            Path(environ.get("XDG_CONFIG_HOME", Path.home() / ".config"))
+            / "helix" / "config.toml"
+        )
+
+        if helix_config.is_file():
+            helix_config.unlink()
+        else:
+            helix_config.parent.mkdir(parents=True, exist_ok=True)
+        helix_config.symlink_to(Path.cwd() / "init.lua")
