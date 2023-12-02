@@ -3,9 +3,6 @@ if status is-interactive
   set -U fish_greeting
   fish_vi_key_bindings
 
-  # set -x EDITOR helix
-  # set -x VISUAL helix
-
   bind \ee edit_command_buffer
 
   set fish_cursor_default     block      blink
@@ -48,7 +45,7 @@ if status is-interactive
   function ls; command ls --classify=auto --color=auto $argv; end
   function ffmpeg; command ffmpeg -hide_banner $argv; end
   function ffprobe; command ffprobe -hide_banner $argv; end
-  function ffplay; command ffprobe -hide_banner $argv; end
+  function ffplay; command ffplay -hide_banner $argv; end
 
   function fish_prompt
     if test $CMD_DURATION -gt 10000

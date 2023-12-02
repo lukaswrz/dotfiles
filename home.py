@@ -135,38 +135,39 @@ if __name__ == "__main__":
 
         for k, v in {
             "askpass.sh": 'export SUDO_ASKPASS="$HOME/.local/bin/sudoaskpass"\n',
+            "editor.sh": "export EDITOR=helix\nexport VISUAL=helix\n",
             "firefox.sh": "export MOZ_USE_XINPUT2=1\n",
             "path.sh": 'export PATH="$HOME/.local/bin:$PATH"\n',
             "steam.sh": "export GDK_SCALE=1\n",
         }.items():
             script = parent / k
-            if not script.is_file():
-                script.parent.mkdir(parents=True, exist_ok=True)
-                script.write_text(v)
+            if script.exists(follow_symlinks=False):
+                script.unlink()
+            script.parent.mkdir(parents=True, exist_ok=True)
+            script.write_text(v)
 
         sudoaskpass = Path.home() / '.local' / 'bin' / 'sudoaskpass'
-        if sudoaskpass.is_file():
+        if sudoaskpass.exists(follow_symlinks=False):
             sudoaskpass.unlink()
         sudoaskpass.parent.mkdir(parents=True, exist_ok=True)
-        sudoaskpass.touch(0o755)
+        sudoaskpass.touch(mode=0o755)
         sudoaskpass.write_text(dedent("""\
             #!/usr/bin/env bash
             exec kdialog --password Askpass
         """))
 
-
     if chosen("mpv"):
         mpv_parent = Path.home() / ".var" / "app" / "io.mpv.Mpv"
         if mpv_parent.is_dir():
             mpv_conf = mpv_parent / "config" / "mpv" / "mpv.conf"
-            if not mpv_conf.is_file():
+            if not mpv_conf.exists(follow_symlinks=False):
                 mpv_conf.parent.mkdir(parents=True, exist_ok=True)
                 mpv_conf.write_text(dedent("""\
                     force-window=immediate
                     keep-open=yes
                     save-position-on-quit=yes
 
-                    screenshot-template=%f_%wH%wM%wS.%wT
+                    screenshot-template="%f_%wH%wM%wS.%wT"
 
                     scale=ewa_lanczossharp
                     cscale=ewa_lanczossharp
@@ -180,7 +181,7 @@ if __name__ == "__main__":
 
     if chosen("readline"):
         inputrc = Path.home() / ".inputrc"
-        if not inputrc.is_file():
+        if not inputrc.exists(follow_symlinks=False):
             inputrc.write_text(dedent("""\
                 set editing-mode vi
                 set completion-ignore-case on
@@ -203,15 +204,19 @@ if __name__ == "__main__":
             / "fish"
             / "config.fish"
         )
-        if fish_config.is_file():
-            fish_config.unlink()
-        else:
+        if not fish_config.exists(follow_symlinks=False):
             fish_config.parent.mkdir(parents=True, exist_ok=True)
-        fish_config.symlink_to(Path.cwd() / "config.fish")
+            fish_config.symlink_to(Path.cwd() / "config.fish")
+
+    if chosen("bash"):
+        bashrc = Path.home() / ".bashrc"
+        if not bashrc.exists(follow_symlinks=False):
+            bashrc.parent.mkdir(parents=True, exist_ok=True)
+            bashrc.symlink_to(Path.cwd() / "bashrc")
 
     if chosen("ssh"):
         ssh_config = Path.home() / '.ssh' / 'config'
-        if not ssh_config.is_file():
+        if not ssh_config.exists(follow_symlinks=False):
             ssh_config.parent.mkdir(parents=True, exist_ok=True)
             ssh_config.write_text(dedent("""\
                 Host *
@@ -233,8 +238,7 @@ if __name__ == "__main__":
             for profile in parent.glob(pattern):
                 userjs = profile / "user.js"
 
-                if not userjs.is_file():
-                    userjs.touch()
+                if not userjs.exists(follow_symlinks=False):
                     userjs.write_text(dedent("""\
                         user_pref('signon.prefillForms', false);
                         user_pref('signon.rememberSignons', false);
@@ -283,8 +287,8 @@ if __name__ == "__main__":
             / "helix" / "config.toml"
         )
 
-        if helix_config.is_file():
+        if helix_config.exists(follow_symlinks=False):
             helix_config.unlink()
         else:
             helix_config.parent.mkdir(parents=True, exist_ok=True)
-        helix_config.symlink_to(Path.cwd() / "init.lua")
+        helix_config.symlink_to(Path.cwd() / "config.toml")
