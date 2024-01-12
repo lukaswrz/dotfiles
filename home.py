@@ -240,15 +240,17 @@ if __name__ == "__main__":
 
                 if not userjs.exists(follow_symlinks=False):
                     userjs.write_text(dedent("""\
+                        // Forms
                         user_pref('signon.prefillForms', false);
                         user_pref('signon.rememberSignons', false);
-                        user_pref('privacy.webrtc.legacyGlobalIndicator', false);
-                        user_pref('browser.compactmode.show', true);
-                        user_pref('toolkit.legacyUserProfileCustomizations.stylesheets', true);
                         user_pref('signon.autofillForms', false);
                         user_pref('signon.formlessCapture.enabled', false);
                         user_pref('browser.formfill.enable', false);
+
+                        // Pocket
                         user_pref('extensions.pocket.enabled', false);
+
+                        // Sponsorships
                         user_pref('browser.newtabpage.activity-stream.showSponsored', false);
                         user_pref('browser.newtabpage.activity-stream.showSponsoredTopSites', false);
                         user_pref('browser.newtabpage.activity-stream.feeds.section.topstories', false);
@@ -256,8 +258,11 @@ if __name__ == "__main__":
                         user_pref('browser.newtabpage.activity-stream.section.highlights.includeBookmarks', false);
                         user_pref('browser.newtabpage.activity-stream.section.highlights.includeDownloads', false);
                         user_pref('browser.newtabpage.activity-stream.section.highlights.includeVisited', false);
+
+                        // VA-API (https://bugzilla.mozilla.org/show_bug.cgi?id=1610199)
                         user_pref('media.ffmpeg.vaapi.enabled', true);
-                        user_pref('media.rdd-vpx.enabled', true);
+
+                        // Telemetry
                         user_pref('toolkit.telemetry.unified', false);
                         user_pref('toolkit.telemetry.enabled', false);
                         user_pref('toolkit.telemetry.server', 'data:,');
@@ -277,6 +282,8 @@ if __name__ == "__main__":
                         user_pref('breakpad.reportURL', '');
                         user_pref('browser.tabs.crashReporting.sendReport', false);
                         user_pref('browser.crashReports.unsubmittedCheck.autoSubmit2', false);
+
+                        // Referer
                         user_pref("network.http.referer.XOriginPolicy", 1);
                         user_pref("network.http.referer.XOriginTrimmingPolicy", 0);
                     """))
