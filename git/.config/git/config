@@ -1,0 +1,7 @@
+[user]
+	name = Lukas Wurzinger
+	email = lukas@wrz.one
+[core]
+	excludesFile = ~/.config/git/ignore
+[init]
+	defaultBranch = main
