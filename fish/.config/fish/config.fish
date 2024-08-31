@@ -29,9 +29,8 @@ if status is-interactive
 
   abbr --add mv mv -n
 
-  abbr --add rm rm -i
-  abbr --add rmr rm -ri
-  abbr --add rr rm -ri
+  abbr --add rmr rm -r
+  abbr --add rr rm -r
 
   abbr --add v hx
 
