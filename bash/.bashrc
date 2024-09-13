@@ -1,1 +1,1 @@
-source /etc/bashrc
+source /etc/bash.bashrc
