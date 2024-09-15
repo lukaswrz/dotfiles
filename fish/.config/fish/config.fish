@@ -16,6 +16,14 @@ if status is-interactive
     direnv hook fish | source
   end
 
+  if type -q starship
+    starship init fish | source
+  end
+
+  if type -q nix
+    fish_add_path ~/.local/state/nix/profile/bin
+  end
+
   abbr --add l ls
   abbr --add lsa ls -a
   abbr --add la ls -a
