@@ -3,6 +3,7 @@ theme = "github_dark_high_contrast_transparent"
 [editor]
 line-number = "relative"
 scroll-lines = 3
+bufferline = "multiple"
 
 [editor.cursor-shape]
 insert = "bar"
