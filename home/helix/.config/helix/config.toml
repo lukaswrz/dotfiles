@@ -13,12 +13,41 @@ select = "underline"
 [editor.lsp]
 display-messages = true
 
+[editor.whitespace.render]
+space = "none"
+tab = "none"
+nbsp = "all"
+nnbsp = "all"
+newline = "none"
+
 [editor.whitespace.characters]
-space = " "
-newline = "⏎"
-tab = "→"
-tabpad = "·"
+space = "·"
 nbsp = "⍽"
+nnbsp = "␣"
+tab = "→"
+newline = "⏎"
+tabpad = "·"
+
+[editor.indent-guides]
+render = true
+character = "▏"
+skip-levels = 1
+
+[editor.soft-wrap]
+enable = true
+
+[editor.file-picker]
+hidden = false
+
+[editor.statusline]
+mode.normal = "NORMAL"
+mode.insert = "INSERT"
+mode.select = "SELECT"
+
+[editor.auto-save]
+focus-lost = true
+after-delay.enable = true
+after-delay.timeout = 3000
 
 [keys.normal]
 # Nicities
@@ -60,7 +89,6 @@ u = ["undo", "collapse_selection"]
 "#" = ["move_char_right", "move_prev_word_start", "move_next_word_end", "search_selection", "search_prev"]
 
 [keys.insert]
-# Nicities
 esc = ["collapse_selection", "normal_mode"]
 
 [keys.select]

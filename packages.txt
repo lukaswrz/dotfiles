@@ -1,6 +1,12 @@
 bash
 direnv
+fd
 fish
+git
+gitui
 helix
 nix
+ripgrep
 starship
+wl-clipboard
+zellij

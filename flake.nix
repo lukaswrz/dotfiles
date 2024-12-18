@@ -14,15 +14,17 @@
     flake-parts.lib.mkFlake {inherit inputs;} {
       systems = nixpkgs.lib.systems.flakeExposed;
 
-      perSystem = {pkgs, ...}: {
-        devShells.default = pkgs.mkShellNoCC {
-          packages = [
-            (pkgs.writeShellApplication {
-              name = "plow";
+      perSystem = {
+        pkgs,
+        self',
+        ...
+      }: {
+        packages.plow = pkgs.callPackage ./plow {};
 
-              text = builtins.readFile ./plow.sh;
-            })
-          ];
+        devShells.default = pkgs.mkShellNoCC {
+          PLOW_FROM = "./home";
+
+          packages = [self'.packages.plow];
         };
       };
     };

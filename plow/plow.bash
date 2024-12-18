@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 set -o errexit
 set -o nounset
 set -o pipefail
@@ -8,8 +10,8 @@ opts=$(getopt --options f:t:Fivm: --longoptions=from:,to:,force,interactive,verb
 
 eval set -- "$opts"
 
-from=$PWD
-to=$HOME
+from=${PLOW_FROM:-$PWD}
+to=${PLOW_TO:-$HOME}
 lnflags=()
 mkdirflags=()
 while true; do
@@ -45,6 +47,9 @@ while true; do
     ;;
   esac
 done
+
+from=$(realpath --strip -- "$from")
+to=$(realpath --strip -- "$to")
 
 if (( $# > 0 )); then
   choices=("$@")

@@ -1,7 +1,12 @@
 [user]
 	name = Lukas Wurzinger
 	email = lukas@wrz.one
+	signingkey = ~/.ssh/id_ed25519.pub
 [core]
 	excludesFile = ~/.config/git/ignore
 [init]
 	defaultBranch = main
+[gpg]
+	format = ssh
+[commit]
+	gpgsign = true
