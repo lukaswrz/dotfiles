@@ -12,6 +12,12 @@ if status is-interactive
     set fish_cursor_replace_one underscore blink
     set fish_cursor_visual block
 
+    if set -q XDG_CONFIG_HOME
+        set -x RIPGREP_CONFIG_PATH $XDG_CONFIG_HOME/ripgrep/ripgreprc
+    else
+        set -x RIPGREP_CONFIG_PATH ~/.config/ripgrep/ripgreprc
+    end
+
     if type -q direnv
         direnv hook fish | source
     end
