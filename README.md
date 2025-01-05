@@ -11,11 +11,11 @@ pacman --sync - < packages.txt
 ## Installing dotfiles
 
 ```shell
-plow --force
+plow --force --verbose
 ```
 
 or...
 
 ```shell
-plow --force --from ./home --to ~
+plow --force --verbose --from ./home --to ~
 ```
