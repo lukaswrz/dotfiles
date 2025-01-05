@@ -21,7 +21,7 @@ if [[ ! -v PLOW_CACHE ]]; then
   PLOW_CACHE=.plowcache
 fi
 
-opts=$(
+args=$(
   getopt \
     --options f:t:Fivm: \
     --longoptions from:,to:,force,interactive,verbose,directory-mode: \
@@ -29,7 +29,7 @@ opts=$(
     -- "$@"
 )
 
-eval set -- "$opts"
+eval set -- "$args"
 
 from=${PLOW_FROM:-$PWD}
 to=${PLOW_TO:-$HOME}
