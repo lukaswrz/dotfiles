@@ -2,3 +2,5 @@
 .devenv/
 
 .pre-commit-config.yaml
+
+.plowcache

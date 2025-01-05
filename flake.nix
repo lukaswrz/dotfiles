@@ -39,6 +39,7 @@
             pkgs.lib.mkIf (devenvRootFileContent != "") devenvRootFileContent;
 
           env.PLOW_FROM = "./home";
+          env.PLOW_CACHE = "./.plowcache";
 
           imports = [
             ./devenv.nix
