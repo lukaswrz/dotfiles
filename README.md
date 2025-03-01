@@ -2,13 +2,7 @@
 
 My dotfiles.
 
-## Installing packages
-
-```shell
-pacman --sync - < packages.txt
-```
-
-## Installing dotfiles
+## Usage
 
 ```shell
 plow --force --verbose

@@ -12,10 +12,10 @@ if status is-interactive
     set fish_cursor_replace_one underscore blink
     set fish_cursor_visual block
 
-    if set -q XDG_CONFIG_HOME
-        set -x RIPGREP_CONFIG_PATH $XDG_CONFIG_HOME/ripgrep/ripgreprc
-    else
-        set -x RIPGREP_CONFIG_PATH ~/.config/ripgrep/ripgreprc
+    begin
+        set --local parent $XDG_CONFIG_HOME
+        test -z $parent && set parent ~/.config
+        set --export RIPGREP_CONFIG_PATH $parent/ripgrep/ripgreprc
     end
 
     if type -q direnv
@@ -27,8 +27,12 @@ if status is-interactive
     end
 
     if type -q nix
-        fish_add_path ~/.local/state/nix/profile/bin
+        set --local parent $XDG_STATE_HOME
+        test -z $parent && set parent ~/.local/state
+        fish_add_path $parent/nix/profile/bin
     end
+
+    fish_add_path ~/.local/bin
 
     abbr --add l ls
     abbr --add lsa ls -a
