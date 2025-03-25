@@ -32,6 +32,11 @@ if status is-interactive
         fish_add_path $parent/nix/profile/bin
     end
 
+    if type -q hx
+        set --export EDITOR hx
+        set --export VISUAL hx
+    end
+
     fish_add_path ~/.local/bin
 
     abbr --add l ls

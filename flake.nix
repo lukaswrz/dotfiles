@@ -3,9 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-
     flake-parts.url = "github:hercules-ci/flake-parts";
-
     devenv-root = {
       url = "file+file:///dev/null";
       flake = false;
@@ -33,9 +31,13 @@
       perSystem = {
         pkgs,
         self',
+        lib,
         ...
       }: {
-        packages.plow = pkgs.callPackage ./plow {};
+        packages = lib.packagesFromDirectoryRecursive {
+          inherit (pkgs) callPackage;
+          directory = ./packages;
+        };
 
         devenv.shells.default = {
           devenv.root = let
@@ -52,6 +54,7 @@
 
           packages = [
             self'.packages.plow
+            self'.packages.codeinit
           ];
         };
       };

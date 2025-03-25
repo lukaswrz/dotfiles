@@ -47,5 +47,9 @@ zig-cache/
 
 zig-out/
 
+.devenv*
+devenv.local.nix
+
 .direnv/
-.devenv/
+
+.pre-commit-config.yaml
