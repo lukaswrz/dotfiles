@@ -4,8 +4,8 @@
 [core]
 	# Global gitignore
 	excludesFile = ~/.config/git/ignore
-	# Don't paginate output by default
-	pager = cat
+	# Paginate output
+	pager = less
 	# Use Codium as default editor
 	editor = codium --wait
 	# Don't consider trailing space change as a cause for merge conflicts
