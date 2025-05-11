@@ -6,3 +6,11 @@ file-types = ["tmpl"]
 name = "python"
 language-servers = [ "basedpyright" ]
 formatter = {command = 'ruff', args = ["format", "--quiet", "-"]}
+
+[language-server]
+zk-lsp = { command = "zk", args = [ "lsp" ] }
+
+[[language]]
+name = "markdown"
+roots = [ ".zk" ]
+language-servers = [ "zk-lsp" ]

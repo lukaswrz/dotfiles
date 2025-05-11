@@ -4,11 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    devenv-root = {
-      url = "file+file:///dev/null";
-      flake = false;
-    };
-    devenv.url = "github:cachix/devenv";
+    weave.url = "git+https://codeberg.org/helvetica/weave.git";
   };
 
   nixConfig = {
@@ -22,13 +18,10 @@
     ...
   } @ inputs:
     flake-parts.lib.mkFlake {inherit inputs;} {
-      imports = [
-        inputs.devenv.flakeModule
-      ];
-
       systems = nixpkgs.lib.systems.flakeExposed;
 
       perSystem = {
+        system,
         pkgs,
         self',
         lib,
@@ -39,23 +32,17 @@
           directory = ./packages;
         };
 
-        devenv.shells.default = {
-          devenv.root = let
-            devenvRootFileContent = builtins.readFile inputs.devenv-root.outPath;
-          in
-            pkgs.lib.mkIf (devenvRootFileContent != "") devenvRootFileContent;
-
-          env.PLOW_FROM = "./home";
-          env.PLOW_CACHE = "./.plowcache";
-
-          imports = [
-            ./devenv.nix
-          ];
-
+        devShells.default = pkgs.mkShellNoCC {
           packages = [
-            self'.packages.plow
-            self'.packages.codeinit
+            inputs.weave.packages.${system}.default
           ];
+
+          shellHook = ''
+            root=$(git rev-parse --show-toplevel)
+
+            export WEAVE_FROM=$root/home
+            export WEAVE_HIST=$root/.weavecache
+          '';
         };
       };
     };

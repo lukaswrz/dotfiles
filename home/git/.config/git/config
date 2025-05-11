@@ -6,8 +6,8 @@
 	excludesFile = ~/.config/git/ignore
 	# Paginate output
 	pager = less
-	# Use Codium as default editor
-	editor = codium --wait
+	# Use Helix as default editor
+	editor = hx
 	# Don't consider trailing space change as a cause for merge conflicts
 	whitespace = -trailing-space
 [init]
@@ -36,12 +36,12 @@
 	wordRegex = .
 	# Display submodule-related information (commit listings)
 	submodule = log
-	# Use VSCode as default diff tool when running `git difftool`
-	tool = codium
+	# Use Helix as default diff tool when running `git difftool` (TODO)
+	# tool = helix
 [difftool]
 	prompt = false
-[difftool "codium"]
-	cmd = codium --wait --diff -- "$LOCAL" "$REMOTE"
+# [difftool "helix"]
+#   cmd = hx --wait --diff -- "$LOCAL" "$REMOTE"
 [fetch]
 	# Auto-fetch submodule changes (won't auto-update)
 	recurseSubmodules = on-demand
