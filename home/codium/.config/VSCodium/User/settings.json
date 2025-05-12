@@ -1,6 +1,0 @@
-{
-    "workbench.colorTheme": "Orbi Blue",
-    "files.insertFinalNewline": true,
-    "nix.enableLanguageServer": true,
-    "php.suggest.basic": false
-}
