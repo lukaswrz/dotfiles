@@ -38,41 +38,4 @@ if status is-interactive
     end
 
     fish_add_path ~/.local/bin
-
-    abbr --add l ls
-    abbr --add lsa ls -a
-    abbr --add la ls -a
-    abbr --add lsl ls -l
-    abbr --add ll ls -l
-    abbr --add lsla ls -la
-    abbr --add lla ls -la
-
-    abbr --add cp cp -n
-    abbr --add cpr cp -rn
-
-    abbr --add mv mv -n
-
-    abbr --add rmr rm -r
-    abbr --add rr rm -r
-
-    abbr --add v hx
-
-    abbr --add g git
-    abbr --add gc git commit
-    abbr --add gco git checkout
-    abbr --add gs git status
-    abbr --add gd git diff
-    abbr --add ga git add
-
-    abbr --add s sudo
-
-    abbr --add gn grep -n
-    abbr --add gin grep -in
-    abbr --add grin grep -rin
-
-    abbr --add df df -h
-
-    abbr --add du du -h
-
-    abbr --add c cd
 end
