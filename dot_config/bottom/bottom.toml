@@ -1,0 +1,15 @@
+[flags]
+rate = "1s"
+retention = "10m"
+
+temperature_type = "celsius"
+
+battery = true
+enable_cache_memory = true
+
+tree = true
+show_table_scroll_position = true
+process_command = false
+
+[styles]
+theme = "gruvbox"

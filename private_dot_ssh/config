@@ -1,0 +1,11 @@
+Include local/*
+
+Host *
+    Compression yes
+    ServerAliveInterval 60
+
+Host github.com
+    User git
+
+Host forgejo.helveticanonstandard.net
+    User forgejo
