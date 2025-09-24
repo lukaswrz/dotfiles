@@ -14,7 +14,11 @@ if (which hx | is-not-empty) {
 }
 
 $env.config = {
+  show_banner: false,
   edit_mode: 'vi',
+  rm: {
+    always_trash: true,
+  },
   hooks: {
     pre_prompt: [{ ||
       if (which direnv | is-empty) {
