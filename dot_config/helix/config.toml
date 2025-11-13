@@ -4,6 +4,7 @@ theme = "revontuli_night_transparent"
 line-number = "relative"
 scroll-lines = 3
 bufferline = "multiple"
+auto-format = false
 
 [editor.cursor-shape]
 insert = "bar"

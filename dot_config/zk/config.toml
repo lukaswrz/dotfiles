@@ -27,8 +27,8 @@ colon-tags = true
 
 [tool]
 editor = "hx"
-# shell = "/bin/bash"
-# pager = "less -FIRX"
+shell = "bash"
+pager = "less --quit-if-one-screen --ignore-case --RAW-CONTROL-CHARS --no-init"
 fzf-preview = "bat -p --color always {-1}"
 
 [filter]
