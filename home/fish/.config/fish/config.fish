@@ -15,12 +15,6 @@ set fish_cursor_insert line blink
 set fish_cursor_replace_one underscore blink
 set fish_cursor_visual block
 
-begin
-    set -l parent $XDG_CONFIG_HOME
-    test -z $parent && set parent ~/.config
-    set -x RIPGREP_CONFIG_PATH $parent/ripgrep/ripgreprc
-end
-
 if type -q direnv
     direnv hook fish | source
 end
@@ -90,10 +84,10 @@ function fish_prompt --description 'Write out the prompt'
     end
 
     set_color $color_cwd
-    echo -n (prompt_pwd)
+    echo -n -- (prompt_pwd)
     set_color normal
 
-    echo -n -- (fish_vcs_prompt) ' '
+    echo -n -- (fish_vcs_prompt)' '
 
     set -l status_color (set_color $fish_color_status)
     set -l statusb_color (set_color --bold $fish_color_status)
