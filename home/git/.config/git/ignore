@@ -1,8 +1,3 @@
-.idea/
-.vscode/
-.iml
-*.sublime-workspace
-
 node_modules/
 
 log/
@@ -23,12 +18,14 @@ zig-cache/
 *.7z
 *.dmg
 *.gz
+*.xz
+*.bz2
+*.zst
 *.iso
 *.jar
 *.rar
 *.tar
 *.zip
-*.msi
 
 *.sqlite
 *.sqlite3
@@ -39,18 +36,10 @@ zig-cache/
 *.rdb
 
 *.bak
-*.swp
-*.swo
-*~
-*#
 
 zig-out/
 
-.devenv*
-devenv.local.nix
-
+.envrc
 .direnv/
-
-.pre-commit-config.yaml
 
 result
