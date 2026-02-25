@@ -4,24 +4,14 @@ function show_help
     echo "Usage: $(status filename) -t <to>"
     echo
     echo "Options:"
-    echo "  -f, --from    Source config directory (default: ~)"
-    echo "  -t, --to      Destination directory (required)"
-    echo "  -h, --help    Print this help message"
+    echo "  -f, --from     Source config directory (default: ~)"
+    echo "  -t, --to       Destination directory (required)"
+    echo "  -v, --verbose  Verbose output"
+    echo "  -h, --help     Print this help message"
 end
 
-argparse 'f/from=' 't/to=' 'h/help' -- $argv
+argparse 'f/from=' 't/to=' 'v/verbose' 'h/help' -- $argv
 or begin
-    show_help >&2
-    exit 1
-end
-
-if set -q _flag_h
-    show_help >&2
-    exit 0
-end
-
-if not set -q _flag_t
-    echo "Error: --to is required" >&2
     show_help >&2
     exit 1
 end
@@ -31,7 +21,26 @@ if set -q _flag_f
     set from (realpath --strip -- $_flag_f)
 end
 
+if not set -q _flag_t
+    echo "Error: --to is required" >&2
+    show_help >&2
+    exit 1
+end
+
 set to $_flag_t
+
+set mkdirflags
+set lnflags
+
+if set -q _flag_v
+    set -a mkdirflags --verbose
+    set -a lnflags --verbose
+end
+
+if set -q _flag_h
+    show_help >&2
+    exit 0
+end
 
 set cosmic $from/.config/cosmic
 
@@ -61,6 +70,6 @@ for file in $cosmic/**
 
     set escaped_from (string escape --style regex -- $from)
     set target (realpath --strip -- $to/(string replace --regex -- "^$escaped_from" '' $file))
-    echo mkdir --parents -- (dirname -- $target)
-    echo cp -- $file $target
+    mkdir --parents $mkdirflags -- (dirname -- $target)
+    ln --force $lnflags -- $file $target
 end
