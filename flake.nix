@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    weave.url = "git+https://hack.helveticanonstandard.net/helvetica/weave.git";
+    weave.url = "git+https://hack.moontide.ink/m64/weave.git";
   };
 
   outputs =
