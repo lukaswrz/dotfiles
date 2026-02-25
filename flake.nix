@@ -40,6 +40,7 @@
               pkgs.prettier
               pkgs.taplo
               pkgs.fish
+              pkgs.ruff
             ];
           };
         }

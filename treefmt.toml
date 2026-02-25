@@ -17,3 +17,8 @@ includes = ["*.md"]
 command = "fish_indent"
 options = ["--write", "--"]
 includes = ["*.fish"]
+
+[formatter.ruff-format]
+command = "ruff"
+options = ["format", "--"]
+includes = ["*.py"]
