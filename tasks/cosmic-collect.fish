@@ -10,7 +10,7 @@ function show_help
     echo "  -h, --help     Print this help message"
 end
 
-argparse 'f/from=' 't/to=' 'v/verbose' 'h/help' -- $argv
+argparse 'f/from=' 't/to=' v/verbose h/help -- $argv
 or begin
     show_help >&2
     exit 1
