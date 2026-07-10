@@ -1,0 +1,62 @@
+{
+  "nodes": {
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1783522502,
+        "narHash": "sha256-iffAls3iaNTyJC2faYcUXSI+Gp02cDjYl+MygxKl2GI=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "0bb7ec54c8483066ec9d7720e780a5caa71f8612",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1782959384,
+        "narHash": "sha256-xnJJk+ct+D2+wdRxj1wk36w5zV9RVESwRqcklPdt3fM=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "65179426c83bb3f6bc14898b42ea1c6f01d374b0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "nixpkgs": "nixpkgs",
+        "weave": "weave"
+      }
+    },
+    "weave": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1783184599,
+        "narHash": "sha256-kyBjFpWCiPyrZ4bzaRvDo72a1hjqoRgP1UqagVSW3gM=",
+        "ref": "refs/heads/main",
+        "rev": "da25b21659299fe659a6d438188daa8971bd65a9",
+        "revCount": 1,
+        "type": "git",
+        "url": "https://hack.moontide.ink/pingfisher/weave.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://hack.moontide.ink/pingfisher/weave.git"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
