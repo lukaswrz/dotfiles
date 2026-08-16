@@ -1,0 +1,18 @@
+{
+  "git": {
+    "inline_blame": {
+      "delay_ms": 200,
+      "show_commit_summary": true
+    }
+  },
+  "vim_mode": false,
+  "helix_mode": true,
+  "base_keymap": "Minimal",
+  "ui_font_size": 15.0,
+  "buffer_font_size": 17.0,
+  "theme": {
+    "mode": "system",
+    "light": "macOS Classic Light",
+    "dark": "macOS Classic Dark"
+  }
+}

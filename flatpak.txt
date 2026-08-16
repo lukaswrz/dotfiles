@@ -1,0 +1,14 @@
+app.drey.Warp
+com.github.libresprite.LibreSprite
+com.github.tchx84.Flatseal
+com.obsproject.Studio
+eu.betterbird.Betterbird
+in.cinny.Cinny
+io.github.dweymouth.supersonic
+io.gitlab.librewolf-community
+org.gimp.GIMP
+org.godotengine.Godot
+org.inkscape.Inkscape
+org.jellyfin.JellyfinDesktop
+org.libreoffice.LibreOffice
+org.qbittorrent.qBittorrent

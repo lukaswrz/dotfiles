@@ -1,0 +1,12 @@
+[user]
+name = "Lukas Wurzinger"
+email = "lukas@wrz.one"
+
+[ui]
+pager = "less -FRX"
+color = "auto"
+editor = "gram --wait"
+default-command = "log"
+
+[git]
+push-new-bookmarks = true
