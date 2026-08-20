@@ -20,23 +20,7 @@ c.colors.webpage.darkmode.enabled = True
 
 c.editor.command = ["gram", "--new", "--wait", "--", "{file}:{line}:{column}"]
 
-# Open link in new tab
-config.bind("tt", "open --tab")
-
-# Duplicate tab
-config.bind("td", "tab-clone")
-
-# Close tab
-config.bind("<Ctrl-w>", "tab-close")
-
-# Reopen closed tab
-config.bind("U", "undo")
-
-# Quick bookmark add
-config.bind("bb", "bookmark-add")
-
-# Toggle dark mode
 config.bind("tm", "config-cycle colors.webpage.darkmode.enabled")
-
-# Open config quickly
 config.bind(",c", "config-edit")
+
+config.source("themes/brewer.py")
