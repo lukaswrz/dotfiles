@@ -57,6 +57,15 @@ if type -q hx
     end
 end
 
+# Gram
+function gg --wraps gram --description 'Open project in Gram'
+    if test (count $argv) -eq 0
+        exec gram .
+    end
+
+    gram $argv
+end
+
 # Nix
 if type -q nix
     set -l parent $XDG_STATE_HOME
@@ -64,7 +73,7 @@ if type -q nix
     fish_add_path $parent/nix/profile/bin
 end
 
-# Ripgrep 
+# Ripgrep
 if type -q rg
     function grep --wraps=rg --description 'Use ripgrep as grep'
         command rg $argv
