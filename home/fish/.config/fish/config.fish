@@ -46,24 +46,36 @@ set -xg GOPATH (string join / (default $XDG_DATA_HOME "$HOME/.local/share") go)
 set -xg GOMODCACHE (string join / (default $XDG_CACHE_HOME "$HOME/.cache") go mod)
 
 # Editor
-if type -q hx
-    set -xg EDITOR hx
-    set -xg VISUAL hx
-    function n --wraps hx --description 'Take a note'
+if type -q nextvi
+    set -xg EDITOR nextvi
+    set -xg VISUAL nextvi
+    function n --wraps nextvi --description 'Take a note'
         set -l notes ~/Notes
         mkdir --parents -- $notes
         cd -- $notes
-        hx $argv
+        nextvi $argv
+    end
+
+    function v --wraps nextvi
+        nextvi $argv
+    end
+    function vi --wraps nextvi
+        nextvi $argv
+    end
+    function vim --wraps nextvi
+        nextvi $argv
     end
 end
 
 # Gram
-function gg --wraps gram --description 'Open project in Gram'
-    if test (count $argv) -eq 0
-        exec gram .
-    end
+if type -q gram
+    function gram --wraps gram --description 'Open project in Gram'
+        if test (count $argv) -eq 0
+            exec gram .
+        end
 
-    gram $argv
+        command gram $argv
+    end
 end
 
 # Nix
