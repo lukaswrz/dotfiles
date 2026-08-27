@@ -2,11 +2,11 @@
   "nodes": {
     "nixpkgs": {
       "locked": {
-        "lastModified": 1785090369,
-        "narHash": "sha256-m0pDuRJG7EDo9ri+4Ksu83VsI+PlxNC9lNBfydejce4=",
+        "lastModified": 1787135253,
+        "narHash": "sha256-RD2kNWCG+Bjo6h+JVjWVNntZs2GtRoeY2xHjts/FNkA=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "624af665418d3c65d544145b4d34ad696439570e",
+        "rev": "ffb3c9b700e759be2ef13237c9d8f953b32a1e46",
         "type": "github"
       },
       "original": {
@@ -43,10 +43,10 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1783184599,
-        "narHash": "sha256-kyBjFpWCiPyrZ4bzaRvDo72a1hjqoRgP1UqagVSW3gM=",
+        "lastModified": 1785181139,
+        "narHash": "sha256-pOb55Gbou+vhdVUyCR/xFavMb2TcoCMg3OGCk6QNIrw=",
         "ref": "refs/heads/main",
-        "rev": "da25b21659299fe659a6d438188daa8971bd65a9",
+        "rev": "63e2f3cebdbdeff862a3a5d3349513fa43a4a638",
         "revCount": 1,
         "type": "git",
         "url": "https://hack.moontide.ink/lukas/weave.git"

@@ -46,30 +46,27 @@ set -xg GOPATH (string join / (default $XDG_DATA_HOME "$HOME/.local/share") go)
 set -xg GOMODCACHE (string join / (default $XDG_CACHE_HOME "$HOME/.cache") go mod)
 
 # vi vi vi, the editor of the beast
-if type -q vi
-    set -xg EDITOR vi
-    set -xg VISUAL vi
-    function n --wraps vi --description 'Take a note'
+if type -q nvim
+    set -xg EDITOR nvim
+    set -xg VISUAL nvim
+
+    if type -q neovide
+        function nvim --wraps nvim --description 'Open Neovim in Neovide'
+            neovide --fork -- $argv
+        end
+    end
+
+    abbr --add v nvim
+
+    function note --description 'Take a note'
         set -l notes ~/Notes
         mkdir --parents -- $notes
-        cd -- $notes
-        vi $argv
+        pushd -- $notes
+        nvim $argv
+        popd
     end
 
-    abbr --add v vi
-end
-
-# Gram
-if type -q gram
-    function gram --wraps gram --description 'Open project in Gram'
-        if test (count $argv) -eq 0
-            exec gram .
-        end
-
-        command gram $argv
-    end
-
-    abbr --add g gram
+    abbr --add n note
 end
 
 # Nix

@@ -1,4 +1,26 @@
 [
+  // Switch workspaces
+  {
+    "context": "Workspace",
+    "bindings": {
+      "ctrl-1": ["workspace::ActivateTab", 0],
+      "ctrl-2": ["workspace::ActivateTab", 1],
+      "ctrl-3": ["workspace::ActivateTab", 2],
+      "ctrl-4": ["workspace::ActivateTab", 3],
+      "ctrl-5": ["workspace::ActivateTab", 4],
+      "ctrl-6": ["workspace::ActivateTab", 5],
+      "ctrl-7": ["workspace::ActivateTab", 6],
+      "ctrl-8": ["workspace::ActivateTab", 7],
+      "ctrl-9": ["workspace::ActivateTab", 8],
+      "ctrl-0": ["workspace::ActivateTab", 9],
+    }
+  },
+  {
+    "context": "Editor && mode == full",
+    "bindings": {
+      "tab": "editor::SuperTab",
+    },
+  },
   {
     "context": "Workspace",
     "bindings": {
@@ -7,5 +29,5 @@
       // "ctrl ctrl": "command_palette::Toggle",
       // "alt alt": "task::Spawn"
     }
-  }
+  },
 ]

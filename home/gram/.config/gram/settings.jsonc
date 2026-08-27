@@ -1,12 +1,30 @@
 {
+  "soft_wrap": "editor_width",
+  "wrap_guides": [
+    80,
+    100,
+    120,
+  ],
+  "hard_tabs": false,
+  "toolbar": {
+    "code_actions": true
+  },
+  "minimap": {
+    "show": "never"
+  },
+  "which_key": {
+    "delay_ms": 0
+  },
   "git": {
     "inline_blame": {
       "delay_ms": 200,
       "show_commit_summary": true
     }
   },
-  "vim_mode": false,
-  "helix_mode": true,
+  "use_smartcase_search": true,
+  "show_whitespaces": "trailing",
+  "use_autoclose": false,
+  "vim_mode": true,
   "base_keymap": "Minimal",
   "ui_font_size": 15.0,
   "buffer_font_size": 17.0,
