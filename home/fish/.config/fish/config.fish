@@ -51,8 +51,8 @@ if type -q nvim
     set -xg VISUAL nvim
 
     if type -q neovide
-        function nvim --wraps nvim --description 'Open Neovim in Neovide'
-            neovide --fork -- $argv
+        function nvim --wraps neovide --description 'Open Neovim in Neovide'
+            neovide --fork $argv
         end
     end
 
