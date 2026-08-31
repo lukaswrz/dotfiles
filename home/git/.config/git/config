@@ -1,6 +1,8 @@
 [user]
-    # Error when the user has not explicitly been configured
     useConfigOnly = true
+    name = Lukas Wurzinger
+    email = lukas@wrz.one
+    signingkey = ~/.ssh/id_ed25519.pub
 
 [core]
     # Global gitignore
@@ -8,7 +10,7 @@
     # Paginate output
     pager = less
     # Use Neovim as default editor
-    editor = nvim
+    editor = gram --wait
     # Don't consider trailing space change as a cause for merge conflicts
     whitespace = -trailing-space
 
@@ -48,14 +50,14 @@
     wordRegex = .
     # Display submodule-related information (commit listings)
     submodule = log
-    # Use Neovim as default diff tool when running `git difftool`
-    tool = nvim
+    # Use Gram as default diff tool when running `git difftool`
+    tool = gram
 
 [difftool]
     prompt = false
 
-[difftool "nvim"]
-    cmd = nvim -d "$LOCAL" "$REMOTE"
+[difftool "gram"]
+    cmd = gram --wait --diff "$LOCAL" "$REMOTE"
 
 [fetch]
     # Auto-fetch submodule changes (won't auto-update)
@@ -136,8 +138,3 @@
 
     # Remove file(s) from Git but not from disk
     untrack = rm --cached --
-
-[user]
-     name = Lukas Wurzinger
-     email = lukas@wrz.one
-     signingkey = ~/.ssh/id_ed25519.pub
