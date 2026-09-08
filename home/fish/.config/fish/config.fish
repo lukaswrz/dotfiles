@@ -45,18 +45,18 @@ end
 set -xg GOPATH (string join / (default $XDG_DATA_HOME "$HOME/.local/share") go)
 set -xg GOMODCACHE (string join / (default $XDG_CACHE_HOME "$HOME/.cache") go mod)
 
-# micro
-if type -q micro
-    abbr --add m micro
+# Vis
+if type -q vis
+    abbr --add v vis
 
-    set -xg EDITOR micro
-    set -xg VISUAL micro
+    set -xg EDITOR vis
+    set -xg VISUAL vis
 
-    function note --wraps micro --description 'Take a note'
+    function note --wraps vis --description 'Take a note'
         set -l notes ~/Notes
         mkdir --parents -- $notes
         cd -- $notes
-        micro $argv
+        vis $argv
     end
 
     abbr --add n note
