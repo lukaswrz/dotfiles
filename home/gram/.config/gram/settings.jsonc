@@ -1,4 +1,6 @@
 {
+  "when_closing_with_no_tabs": "close_window",
+  "on_last_window_closed": "quit_app",
   "soft_wrap": "editor_width",
   "wrap_guides": [
     80,
@@ -23,7 +25,7 @@
   },
   "use_smartcase_search": true,
   "show_whitespaces": "trailing",
-  "use_autoclose": false,
+  "use_autoclose": true,
   "vim_mode": true,
   "base_keymap": "Minimal",
   "ui_font_size": 15.0,
