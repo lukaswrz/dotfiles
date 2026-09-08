@@ -25,7 +25,7 @@
     "context": "Workspace",
     "bindings": {
       // TODO: Timeouts
-      // "shift shift": "file_finder::Toggle",
+      "alt-f": "file_finder::Toggle",
       // "ctrl ctrl": "command_palette::Toggle",
       // "alt alt": "task::Spawn"
     }
