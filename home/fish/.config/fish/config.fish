@@ -84,8 +84,17 @@ end
 
 # Ripgrep
 if type -q rg
+    function rg --wraps=rg --description 'ripgrep with convenience settings'
+        command rg \
+            --hidden \
+            --smart-case \
+            --max-columns 80 \
+            --max-columns-preview \
+            $argv
+    end
+
     function grep --wraps=rg --description 'Use ripgrep as grep'
-        command rg $argv
+        rg $argv
     end
 end
 
