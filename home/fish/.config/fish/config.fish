@@ -45,25 +45,18 @@ end
 set -xg GOPATH (string join / (default $XDG_DATA_HOME "$HOME/.local/share") go)
 set -xg GOMODCACHE (string join / (default $XDG_CACHE_HOME "$HOME/.cache") go mod)
 
-# Nextvi
-if type -q nextvi
-    function vi --wraps nextvi --description 'Nextvi as vi'
-        nextvi $argv
-    end
-end
+# micro
+if type -q micro
+    abbr --add m micro
 
-# vi vi vi, the editor of the beast
-if type -q vi
-    set -xg EDITOR vi
-    set -xg VISUAL vi
+    set -xg EDITOR micro
+    set -xg VISUAL micro
 
-    abbr --add v vi
-
-    function note --wraps vi --description 'Take a note'
+    function note --wraps micro --description 'Take a note'
         set -l notes ~/Notes
         mkdir --parents -- $notes
         cd -- $notes
-        vi $argv
+        micro $argv
     end
 
     abbr --add n note
