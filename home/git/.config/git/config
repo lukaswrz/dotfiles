@@ -9,8 +9,8 @@
     excludesFile = ~/.config/git/ignore
     # Paginate output
     pager = less
-    # Use Gram as default editor
-    editor = gram --wait
+    # Use Vim as the default editor
+    editor = vim
     # Don't consider trailing space change as a cause for merge conflicts
     whitespace = -trailing-space
 
