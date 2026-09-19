@@ -12,3 +12,5 @@ org.inkscape.Inkscape
 org.jellyfin.JellyfinDesktop
 org.libreoffice.LibreOffice
 org.qbittorrent.qBittorrent
+org.signal.Signal
+org.squidowl.halloy
