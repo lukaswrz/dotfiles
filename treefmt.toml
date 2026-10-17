@@ -16,7 +16,7 @@ includes = ["*.md"]
 [formatter.fish]
 command = "fish_indent"
 options = ["--write", "--"]
-includes = ["*.fish"]
+includes = ["*.fish", "init", "weave"]
 
 [formatter.ruff-format]
 command = "ruff"

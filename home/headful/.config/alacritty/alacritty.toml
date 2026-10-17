@@ -1,0 +1,6 @@
+[general]
+import = ["colors.toml"]
+live_config_reload = true
+
+[window]
+opacity = 0.95

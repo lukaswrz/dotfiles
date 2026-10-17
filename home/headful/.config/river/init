@@ -1,0 +1,55 @@
+#!/usr/bin/env fish
+
+set --export XDG_CURRENT_DESKTOP river
+set --export XDG_SESSION_DESKTOP river
+set --export XDG_SESSION_TYPE wayland
+set --export XCURSOR_THEME phinger-cursors-dark
+set --export XCURSOR_SIZE 24
+
+set --global --export WOBSOCK /dev/null
+
+# From sd_booted(3):
+# > Internally, this function checks whether the directory /run/systemd/system/
+# > exists. A simple check like this can also be implemented trivially in shell
+# > or any other language.
+if test -d /run/systemd/system
+    if systemctl --user --quiet is-active wob.socket
+        set --global --export WOBSOCK (
+            systemctl --user show wob.socket --property Listen --value | cut --delimiter ' ' --fields 1
+        )
+    end
+
+    set --local vars \
+        XDG_CURRENT_DESKTOP \
+        XDG_SESSION_DESKTOP \
+        XDG_SESSION_TYPE \
+        DISPLAY \
+        WAYLAND_DISPLAY
+
+    # Check if another River session is already active.
+    if systemctl --user -q is-active river-session.target
+        echo 'Another session found; exiting' >&2
+        exit 1
+    end
+
+    # DBus activation environment is independent from systemd. While most
+    # DBus-activated services are already using the `SystemdService` directive,
+    # some still don't and thus we should set the DBus environment with a
+    # separate command.
+    if type --query dbus-update-activation-environment
+        dbus-update-activation-environment --systemd $vars
+    end
+
+    # Reset failed state of all user units.
+    systemctl --user reset-failed
+
+    systemctl --user import-environment $vars
+    systemctl --user start river-session.target
+
+    function cleanup --on-process-exit $fish_pid
+        systemctl --user start --job-mode=replace-irreversibly river-session-shutdown.target
+        systemctl --user unset-environment $vars
+    end
+end
+
+beansprout

@@ -1,0 +1,245 @@
+#!/usr/bin/env fish
+
+# ISC License
+#
+# Copyright (c) 2026 Lukas Wurzinger <lukas@wrz.one>
+#
+# Permission to use, copy, modify, and/or distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+#
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+# REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+# AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+# INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+# LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+# OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+# PERFORMANCE OF THIS SOFTWARE.
+
+function usage
+    echo "Usage:"
+    echo "  $(status filename) SOURCE... DIRECTORY"
+    echo "  $(status filename) -t DIRECTORY SOURCE..."
+    echo
+    echo "Options:"
+    echo "  -h, --help              Show this help text"
+    echo "  -t, --target-directory  Use this as the target directory"
+    echo "  -f, --force             Forcibly make changes to files"
+    echo "  -i, --interactive       Create directories and links interactively"
+    echo "  -v, --verbose           Verbose output"
+    echo "  -m, --directory-mode    Set the mode of any newly created leaf directories"
+    echo "  -n, --no-history        Do not read from or write to the history file"
+    echo "  -H, --history           Specify the path to the history file"
+end
+
+function fatal
+    # printf-escape the filename just in case.
+    printf "$(status filename | string replace --all % %%): %s\n" $argv >&2
+    exit 1
+end
+
+set --global lnflags
+set --global mkdirflags
+set --global rmflags
+
+set --global dohist 1
+set --global histfile .weavehist
+
+argparse \
+    --strict-longopts \
+    --name=(status filename) \
+    --exclusive no-history,history \
+    h/help \
+    t/target-directory= \
+    f/force \
+    i/interactive \
+    v/verbose \
+    m/directory-mode= \
+    n/no-history \
+    H/history= \
+    -- $argv
+or begin
+    usage >&2
+    exit 1
+end
+
+if set --query _flag_help
+    usage
+    exit
+end
+
+if set --query _flag_force
+    set --append lnflags --force
+    set --append rmflags --force
+end
+
+if set --query _flag_interactive
+    set --append lnflags --interactive
+    set --append rmflags --interactive
+end
+
+if set --query _flag_verbose
+    set --append lnflags --verbose
+    set --append mkdirflags --verbose
+    set --append rmflags --verbose
+end
+
+if set --query _flag_directory_mode
+    set --append mkdirflags --mode "$_flag_directory_mode"
+end
+
+if set --query _flag_no_history
+    set dohist 0
+end
+
+if set --query _flag_history
+    set histfile "$_flag_history"
+end
+
+if test -z $histfile
+    fatal 'the path to the history file cannot be empty'
+end
+if begin
+        test -e $histfile
+        and not test -f $histfile
+    end
+    fatal 'the path to the history file must point to a regular file'
+end
+
+set histfile (realpath --strip -- $histfile)
+or exit 1
+
+set --global target
+set --global sources
+
+if set --query _flag_target_directory
+    set target "$_flag_target_directory"
+    set sources $argv
+else
+    set target $argv[-1]
+    set sources $argv[1..-2]
+end
+
+if test (count $target) -ne 1
+    fatal 'expected exactly one target directory'
+end
+
+if test (count $sources) -eq 0
+    fatal 'expected at least one source directory'
+end
+
+# First, the history file is read into the $hist variable, with clean paths for
+# duplicate checking. Then, when creating a link, it is added to the $hist
+# variable and written to the history file if it wasn't already there. Finally,
+# after all links have been created, if dangling links are discovered in the
+# history, they are removed from the filesystem and from the history.
+set --global hist
+
+if test $dohist -ne 0
+    if test -e $histfile
+        while read --local link
+            if test (string length $link) -eq 0
+                continue
+            end
+            set --append hist (realpath --strip -- $link)
+            or exit 1
+        end <$histfile
+        or exit 1
+    end
+end
+
+function histadd --argument-names link
+    if test (count $argv) -ne 1
+        fatal 'invalid number of arguments'
+    end
+
+    if test $dohist -eq 0
+        return
+    end
+
+    set link (realpath --strip -- $link)
+    or return 1
+
+    if not contains $link $hist
+        set --append hist $link
+        echo -- $link >>$histfile
+        or return 1
+    end
+end
+
+set --global errored 0
+
+for source in $sources
+    set source (realpath --strip -- $source)
+    or begin
+        set errored 1
+        continue
+    end
+    # Make sure find doesn't misinterpret the path.
+    # Matches ., .., ./, ../, ./foo, ../bar, /, /baz
+    if not string match --regex --quiet -- '^(?:[.]{1,2}(?:/.*)?|/.*)$' $source
+        set source ./$source
+    end
+
+    # $subject is the full path to the file being linked to, and $rel is the
+    # path relative to the source directory, which is used for creating the
+    # link name $link.
+    find $source -type f -printf '%p\n%P\n' | while read --line --local subject rel
+        set --local link (realpath --strip -- $target/$rel)
+        or begin
+            set errored 1
+            continue
+        end
+        set --local parent (dirname -- $link)
+        or begin
+            set errored 1
+            continue
+        end
+
+        mkdir --parents $mkdirflags -- $parent
+        or begin
+            set errored 1
+            continue
+        end
+
+        ln --symbolic $lnflags -- $subject $link
+        or begin
+            set errored 1
+            continue
+        end
+
+        histadd $link
+        or begin
+            set errored 1
+            continue
+        end
+    end
+    or exit 1
+end
+
+if test $dohist -ne 0
+    # Rewrite the history to only contain links which aren't dangling.
+    set --local newhist
+    for link in $hist
+        if not test -L $link
+            continue
+        end
+
+        if not test -e $link
+            if rm $rmflags -- $link
+                continue
+            else
+                set errored 1
+            end
+        end
+
+        set --append newhist $link
+    end
+    set hist $newhist
+
+    printf '%s\n' $hist >$histfile
+end
+
+if test $errored -ne 0
+    fatal 'errors occurred while weaving'
+end

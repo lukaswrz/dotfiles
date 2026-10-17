@@ -1,0 +1,10 @@
+[Unit]
+Description=Shutdown running River session
+DefaultDependencies=no
+StopWhenUnneeded=true
+
+Conflicts=graphical-session.target graphical-session-pre.target
+After=graphical-session.target graphical-session-pre.target
+
+Conflicts=river-session.target
+After=river-session.target

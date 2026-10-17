@@ -1,16 +1,13 @@
 {
   description = "My dotfiles";
 
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    weave.url = "git+https://hack.moontide.ink/lukas/weave.git";
-  };
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
   outputs =
     {
       nixpkgs,
       ...
-    }@inputs:
+    }:
     let
       inherit (nixpkgs) lib;
 
@@ -20,9 +17,10 @@
         f:
         lib.genAttrs systems (
           system:
-          f {
+          f rec {
             inherit system;
             pkgs = nixpkgs.legacyPackages.${system};
+            treefmt = pkgs.treefmt;
           }
         );
     in
@@ -32,20 +30,20 @@
         {
           default = pkgs.mkShellNoCC {
             packages = [
-              inputs.weave.packages.${system}.default
+              # For weave
+              pkgs.fish
 
               # Formatters
               pkgs.treefmt
               pkgs.nixfmt
               pkgs.prettier
               pkgs.taplo
-              pkgs.fish
               pkgs.ruff
             ];
           };
         }
       );
 
-      formatter = forAllSystems ({ pkgs, ... }: pkgs.treefmt);
+      formatter = forAllSystems ({ treefmt, ... }: treefmt);
     };
 }

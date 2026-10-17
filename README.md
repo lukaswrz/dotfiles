@@ -2,8 +2,6 @@
 
 My dotfiles.
 
-## Usage
-
 ```shell
-weave --interactive --verbose
+./weave --verbose --force home/*/ ~
 ```

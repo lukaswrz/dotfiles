@@ -1,0 +1,61 @@
+#!/usr/bin/env fish
+
+if not set --query WOBSOCK
+    set --global --export WOBSOCK /dev/null
+end
+
+function usage
+    echo "Usage:"
+    echo "  $(status filename) [OPTIONS]"
+    echo
+    echo "Options:"
+    echo "  -h, --help         Show this help text"
+    echo "  -s, --set          Adjust volume (e.g., 2%+, 2%-)"
+    echo "  -m, --mute         Mute"
+    echo "  -M, --unmute       Unmute"
+    echo "  -t, --mute-toggle  Toggle mute"
+end
+
+argparse \
+    --strict-longopts \
+    --name=(status filename) \
+    --exclusive 'set,mute,unmute,mute-toggle' \
+    h/help \
+    s/set= \
+    m/mute \
+    M/unmute \
+    t/mute-toggle \
+    -- $argv
+or begin
+    usage >&2
+    exit 1
+end
+
+if set -q _flag_help
+    usage
+    exit
+end
+
+if set -q _flag_set
+    wpctl set-volume @DEFAULT_AUDIO_SINK@ "$_flag_set"
+    and wpctl get-volume @DEFAULT_AUDIO_SINK@ | sed 's/[^0-9]//g' >$WOBSOCK
+end
+
+if set -q _flag_mute_toggle
+    wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+    and if wpctl get-volume @DEFAULT_AUDIO_SINK@ | grep --quiet MUTED
+        echo 0 >$WOBSOCK
+    else
+        wpctl get-volume @DEFAULT_AUDIO_SINK@ | sed 's/[^0-9]//g' >$WOBSOCK
+    end
+end
+
+if set -q _flag_mute
+    wpctl set-mute @DEFAULT_AUDIO_SINK@ 1
+    and echo 0 >$WOBSOCK
+end
+
+if set -q _flag_unmute
+    wpctl set-mute @DEFAULT_AUDIO_SINK@ 0
+    and wpctl get-volume @DEFAULT_AUDIO_SINK@ | sed 's/[^0-9]//g' >$WOBSOCK
+end
