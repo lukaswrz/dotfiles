@@ -1,53 +1,53 @@
-# Base16 Isotope by Jan T. Sott
+# Brewer 256 color scheme by Timothée Poisot (with modifications)
 
 [colors.primary]
-background = '0x000000'
-foreground = '0xd0d0d0'
+background = '0x0c0d0e'
+foreground = '0xb7b8b9'
 
 [colors.cursor]
-text = '0x000000'
-cursor = '0xd0d0d0'
+text = '0x0c0d0e'
+cursor = '0xb7b8b9'
 
 [colors.normal]
-black = '0x000000'
-red = '0xff0000'
-green = '0x33ff00'
-yellow = '0xff0099'
-blue = '0x0066ff'
-magenta = '0xcc00ff'
-cyan = '0x00ffff'
-white = '0xd0d0d0'
+black = '0x0c0d0e'
+red = '0xe31a1c'
+green = '0x31a354'
+yellow = '0xdca060'
+blue = '0x3182bd'
+magenta = '0x756bb1'
+cyan = '0x80b1d3'
+white = '0xb7b8b9'
 
 [colors.bright]
-black = '0x808080'
-red = '0xff0000'
-green = '0x33ff00'
-yellow = '0xff0099'
-blue = '0x0066ff'
-magenta = '0xcc00ff'
-cyan = '0x00ffff'
-white = '0xffffff'
+black = '0x737475'
+red = '0xff1a1e'
+green = '0x17c94d'
+yellow = '0xffb347'
+blue = '0x269df7'
+magenta = '0x8878f5'
+cyan = '0x7accff'
+white = '0xfcfdfe'
 
 [[colors.indexed_colors]]
 index = 16
-color = "0xff9900"
+color = "0xe6550d"
 
 [[colors.indexed_colors]]
 index = 17
-color = "0x3300ff"
+color = "0xb15928"
 
 [[colors.indexed_colors]]
 index = 18
-color = "0x404040"
+color = "0x2e2f30"
 
 [[colors.indexed_colors]]
 index = 19
-color = "0x606060"
+color = "0x515253"
 
 [[colors.indexed_colors]]
 index = 20
-color = "0xc0c0c0"
+color = "0x959697"
 
 [[colors.indexed_colors]]
 index = 21
-color = "0xe0e0e0"
+color = "0xdadbdc"

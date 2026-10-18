@@ -1,0 +1,44 @@
+#!/usr/bin/env fish
+
+function usage
+    echo "Usage:"
+    echo "  $(status filename) [OPTIONS]"
+    echo
+    echo "Options:"
+    echo "  -h, --help    Show this help text"
+    echo "  -t, --toggle  Toggle"
+end
+
+if not test -d /run/systemd/system
+    echo 'This command only supports systemd' >&2
+    exit 1
+end
+
+argparse \
+    --strict-longopts \
+    --name=(status filename) \
+    h/help \
+    t/toggle \
+    -- $argv
+or begin
+    usage >&2
+    exit 1
+end
+
+if set -q _flag_help
+    usage
+    exit
+end
+
+if test (count $argv) -gt 0
+    echo 'Too many arguments' >&2
+    exit 1
+end
+
+if set -q _flag_toggle
+    if systemctl --user is-active --quiet gammastep.service
+        systemctl --user stop gammastep.service
+    else
+        systemctl --user start gammastep.service
+    end
+end

@@ -42,14 +42,18 @@ wallpaper_image_path "~/.wallpaper"
 
 borders {
     width 2
-    color_focused "0x89b4fa"
-    color_unfocused "0x1e1e2e"
+    color_focused "0x31a354"
+    color_unfocused "0x101010"
 }
 
 bar {
     position top
     time_format "%A, %b %d  %H:%M"
+    fonts "monospace:size=12"
+    text_color "0xb7b8b9"
     background_color "0x000000"
+    vertical_padding 5
+    horizontal_padding 20
     margins {
         top 2
         bottom 2
@@ -61,14 +65,14 @@ bar {
 // Tag overlay widget; shown briefly when switching tags
 tag_overlay {
     tag_amount 10
-    background_color "0x000000"
-    border_color "0x6c7086"
-    square_active_background_color "0x89b4fa"
-    square_active_border_color "0x6c7086"
-    square_active_occupied_color "0xcdd6f4"
-    square_inactive_background_color "0x585b70"
-    square_inactive_border_color "0x6c7086"
-    square_inactive_occupied_color "0xcdd6f4"
+    background_color "0x0c0d0e"
+    border_color "0x737475"
+    square_active_background_color "0x31a354"
+    square_active_border_color "0x31a354"
+    square_active_occupied_color "0x17c94d"
+    square_inactive_background_color "0x0c0d0e"
+    square_inactive_border_color "0x737475"
+    square_inactive_occupied_color "0xb7b8b9"
 }
 
 // Environment variables that will be exported to each process spawned by the current beansprout instance
@@ -164,6 +168,9 @@ keybinds {
     spawn Shift XF86MonBrightnessUp "wrightness --set +1%"
     spawn None XF86MonBrightnessDown "wrightness --set 5%-"
     spawn Shift XF86MonBrightnessDown "wrightness --set 1%-"
+
+    // Toggle night light
+    spawn Mod4+Shift G "wunset --toggle"
 
     // Special command to generate keybinds for keys 1-9 and tags 1<<0 through 1<<8
     tag_bind Mod4 set_output_tags

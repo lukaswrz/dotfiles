@@ -1,14 +1,14 @@
 profile orchard {
     output "Acer Technologies XB283K KV 120918F984200" {
         mode 3840x2160@144.003998Hz
-        scale 1.2
+        scale 1.25
         position 0,1000
     }
 
     output "LG Electronics LG HDR 4K 0x00078EEE" {
         mode 3840x2160@60Hz
-        scale 1.2
-        position 3202,0
-        transform "270"
+        scale 1.25
+        position 3072,0
+        transform 270
     }
 }
