@@ -8,6 +8,10 @@ set --export XCURSOR_SIZE 24
 
 set --global --export WOBSOCK /dev/null
 
+function wrapsprout
+    $argv
+end
+
 # From sd_booted(3):
 # > Internally, this function checks whether the directory /run/systemd/system/
 # > exists. A simple check like this can also be implemented trivially in shell
@@ -17,6 +21,10 @@ if test -d /run/systemd/system
         set --global --export WOBSOCK (
             systemctl --user show wob.socket --property Listen --value | cut --delimiter ' ' --fields 1
         )
+    end
+
+    function wrapsprout
+        systemd-cat --identifier=beansprout -- $argv
     end
 
     set --local vars \
@@ -52,4 +60,4 @@ if test -d /run/systemd/system
     end
 end
 
-beansprout
+wrapsprout beansprout
