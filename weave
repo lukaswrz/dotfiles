@@ -160,7 +160,7 @@ function histadd --argument-names link
     set link (realpath --strip -- $link)
     or return 1
 
-    if not contains $link $hist
+    if not contains -- $link $hist
         set --append hist $link
         echo -- $link >>$histfile
         or return 1
