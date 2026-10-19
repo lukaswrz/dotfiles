@@ -1,6 +1,0 @@
-[Unit]
-Description=River session
-Documentation=man:river(1)
-BindsTo=graphical-session.target
-Wants=graphical-session-pre.target
-After=graphical-session-pre.target

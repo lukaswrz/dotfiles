@@ -1,13 +1,14 @@
 [Unit]
 Description=UPower-powered power alerter
 Documentation=man:poweralertd(1)
-PartOf=graphical-session.target
-Requires=graphical-session.target
+BindsTo=graphical-session.target
+After=graphical-session.target
 
 [Service]
 Type=simple
 ExecStart=/run/current-system/sw/bin/poweralertd
 Restart=on-failure
+Slice=background-graphical.slice
 
 [Install]
 WantedBy=graphical-session.target

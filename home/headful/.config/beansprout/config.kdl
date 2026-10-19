@@ -90,10 +90,10 @@ window_rules {
 
 keybinds {
     // Programs
-    spawn Mod4 Return alacritty
-    spawn Mod4 D fuzzel
-    spawn Mod4 B qutebrowser
-    spawn Mod4 E pcmanfm-qt
+    spawn Mod4 Return "uwsm app alacritty"
+    spawn Mod4 D "uwsm app fuzzel"
+    spawn Mod4 B "uwsm app qutebrowser"
+    spawn Mod4 E "uwsm app pcmanfm-qt"
 
     // Lock screen
     spawn Mod4+Shift V waylock
