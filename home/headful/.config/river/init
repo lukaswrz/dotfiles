@@ -1,9 +1,0 @@
-#!/usr/bin/env fish
-
-uwsm finalize
-
-if systemctl --user --quiet is-active wob.socket
-    set --global --export WOBSOCK (systemctl --user show wob.socket --property Listen --value | cut --delimiter ' ' --fields 1)
-end
-
-beansprout
