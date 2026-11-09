@@ -1,0 +1,58 @@
+#!/usr/bin/env fish
+
+if not type --query metaflac
+    echo 'The metaflac program is required.' >&2
+    exit 1
+end
+
+if test (count $argv) -eq 0
+    echo 'At least one argument specifying a target directory is required.' >&2
+    exit 1
+end
+
+function extof
+    for mime in $argv
+        switch $mime
+            case image/png
+                echo png
+            case image/jpeg
+                echo jpg
+        end
+    end
+end
+
+set errored 0
+
+for root in $argv
+    for file in $root/**.flac
+        set parent (dirname -- $file)
+
+        if test (count $parent/cover.*) -gt 0
+            # Remove cover art if the extracted version already exists.
+            metaflac --remove --block-type=PICTURE --dont-use-padding -- "$file"
+            continue
+        end
+
+        set mime (metaflac --list --block-type=PICTURE -- $file | string match --regex --groups-only '^  MIME type: (.*)')
+
+        if test -z "$mime"
+            echo "Unable to get MIME type of embedded art in $(string escape -- $file), skipping." >&2
+            set errored 1
+            continue
+        end
+
+        set ext (extof $mime)
+        set cover $parent/cover.$ext
+
+        # Export and strip the embedded picture.
+        metaflac --export-picture-to=$cover -- $file
+        metaflac --remove --block-type=PICTURE --dont-use-padding -- $file
+
+        echo "Extracted $(string escape -- $cover) from $(string escape -- $file)"
+    end
+end
+
+if test $errored -ne 0
+    echo 'Errors occurred while extracting.' >&2
+    exit 1
+end
