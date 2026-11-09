@@ -33,8 +33,9 @@ function usage
 end
 
 function fatal
-    # printf-escape the filename just in case.
-    printf "$(status filename | string replace --all % %%): %s\n" $argv >&2
+    for msg in $argv
+        echo -- "$(status filename): $msg" >&2
+    end
     exit 1
 end
 
